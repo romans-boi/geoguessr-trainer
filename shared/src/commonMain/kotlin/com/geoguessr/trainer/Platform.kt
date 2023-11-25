@@ -1,0 +1,7 @@
+package com.geoguessr.trainer
+
+interface Platform {
+    val name: String
+}
+
+expect fun getPlatform(): Platform

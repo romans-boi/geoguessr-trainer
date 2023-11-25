@@ -1,0 +1,25 @@
+*.iml
+.gradle
+/local.properties
+.idea
+.DS_Store
+/build
+*/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# iOS assets generated
+XCAssets+Generated.swift
+
+reports/
+fastlane-build/
+.scannerwork
+
+iosApp/iosApp/Settings.bundle/com.mono0926.LicensePlist/
+
+iosApp/iosApp/Settings.bundle/com.mono0926.LicensePlist.plist
+
+iosApp/iosApp/Settings.bundle/com.mono0926.LicensePlist.latest_result.txt
+Package.resolved
