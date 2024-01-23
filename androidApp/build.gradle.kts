@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.geoguessr.trainer.android"
+    namespace = "com.geotrainer.android"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.geoguessr.trainer.android"
+        applicationId = "com.geotrainer.android"
         minSdk = 28
         targetSdk = 34
         versionCode = 1

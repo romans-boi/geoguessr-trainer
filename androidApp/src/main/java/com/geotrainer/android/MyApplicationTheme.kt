@@ -1,4 +1,4 @@
-package com.geoguessr.trainer.android
+package com.geotrainer.android
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

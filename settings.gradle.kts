@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GeoGuessr_Trainer"
+rootProject.name = "GeoTrainer"
 include(":androidApp")
 include(":shared")
