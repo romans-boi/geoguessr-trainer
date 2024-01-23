@@ -1,1 +1,1 @@
-# GeoTrainer
+# geoguessr-trainer

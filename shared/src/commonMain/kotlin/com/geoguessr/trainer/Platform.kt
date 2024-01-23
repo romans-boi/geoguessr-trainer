@@ -1,4 +1,4 @@
-package com.geotrainer.android
+package com.geoguessr.trainer
 
 interface Platform {
     val name: String

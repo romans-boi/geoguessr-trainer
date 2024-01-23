@@ -34,7 +34,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.geotrainer.shared"
+    namespace = "com.geoguessr.trainer"
     compileSdk = 34
     defaultConfig {
         minSdk = 28
