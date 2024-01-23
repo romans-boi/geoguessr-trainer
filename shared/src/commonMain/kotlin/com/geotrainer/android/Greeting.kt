@@ -1,4 +1,4 @@
-package com.geoguessr.trainer
+package com.geotrainer.android
 
 class Greeting {
     private val platform: Platform = getPlatform()
