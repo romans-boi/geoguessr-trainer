@@ -1,23 +1,143 @@
 [versions]
-agp = "8.1.0"
-kotlin = "1.9.20"
-compose = "1.5.4"
-compose-compiler = "1.5.4"
-compose-material3 = "1.1.2"
-androidx-activityCompose = "1.8.0"
+gradle-plugin = "8.2.1" # https://developer.android.com/reference/tools/gradle-api
+
+# google-services-plugin = "4.4.0" # https://developers.google.com/android/guides/google-services-plugin
+# firebase-bom = "32.7.0" # https://firebase.google.com/support/release-notes/android
+
+kotlin = "1.9.22" # https://github.com/JetBrains/kotlin
+ksp = "1.9.22-1.0.16" # depends on kotlin version, see https://github.com/google/ksp/releases
+compose-compiler = "1.5.8" # depends on kotlin version, see https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+compose-bom = "2024.01.00" # see https://developer.android.com/jetpack/compose/bom/bom-mapping for mapping to compose version
+accompanist = "0.32.0" # depends on compose_bom_version, see https://github.com/google/accompanist/releases
+compose-destinations = '1.10.0' # depends on compose_bom_version, see https://github.com/raamcosta/compose-destinations
+coil-compose = '2.5.0' # https://github.com/coil-kt/coil
+spotless = '6.19.0'
+
+# KotlinX
+kotlinx-coroutines = "1.7.3" # https://github.com/Kotlin/kotlinx.coroutines
+kotlinx-datetime = "0.5.0" # https://github.com/Kotlin/kotlinx-datetime
+
+# Networking
+ktor = "2.3.7" # https://github.com/ktorio/ktor
+
+# AndroidX
+activity = "1.8.2" # https://developer.android.com/jetpack/androidx/releases/activity
+core = "1.12.0" # https://developer.android.com/jetpack/androidx/releases/core
+core-splash = "1.0.1" # https://developer.android.com/jetpack/androidx/releases/core
+lifecycle = "2.6.2" # https://developer.android.com/jetpack/androidx/releases/lifecycle
+
+# Build
+buildKonfig = "0.15.0" # https://github.com/yshrsmz/BuildKonfig
+
+# DI
+# https://insert-koin.io/docs/setup/koin
+koin = "3.5.3"
+
+# Moko
+moko-resources = "0.23.0" # https://github.com/icerockdev/moko-resources
+moko-swift = "0.6.1" # https://github.com/icerockdev/moko-kswift
+
+# Testing
+turbine = "1.0.0" # https://github.com/cashapp/turbine
+mockative = "2.0.1" # https://github.com/mockative/mockative
+# Download the latest diktat-analysis.yml file after an update and compare
+# against the local config to ensure we have a setting for any added rules
+#  can be used for the diffing
+diktat = "1.2.5"
+
+# Swift
+swiftPoet = "1.5.0"
+
 
 [libraries]
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+# KSP Annotations procesing
+ksp = { module = "com.google.devtools.ksp:symbol-processing", version.ref = "ksp" }
+ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+ksp-gradlePlugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+
+# KotlinX
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+# AndroidX
+androidx-core-core = { module = "androidx.core:core-ktx", version.ref = "core" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splash" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+# Compose
+androidx-composeCompiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
+androidx-compose-ui-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-toolingpreview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-material = { module = "androidx.compose.material:material" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+
+# Firebase
+# firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+# firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+# firebase-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
+# firebase-appcheckdebug = { module = "com.google.firebase:firebase-appcheck-debug"}
+
+# Accompanist
+google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+
+# Compose Destinations Nav Lib
+composeDestinations-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "compose-destinations" }
+composeDestinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-destinations" }
+
+# Networking
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-serialization-kotlixjson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-contentnegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-resources = { module = "io.ktor:ktor-client-resources", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+test-ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+
+# Koin
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+
+# Moko
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
+moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
+moko-resources-test = { module = "dev.icerock.moko:resources-test", version.ref = "moko-resources" }
+moko-swift = { module = "dev.icerock.moko:kswift-runtime", version.ref = "moko-swift" }
+
+# Code Gen
+swiftPoet = { module = "io.outfoxx:swiftpoet", version.ref = "swiftPoet" }
+
+# Test
+test-junit-junit = { module = "junit:junit", version = "4.13.2" }
+test-androidx-extjunit = { module = "androidx.test.ext:junit", version = "1.1.5" }
+test-androidx-extjunit-ktx = { module = "androidx.test.ext-ktx:junit", version = "1.1.5" }
+test-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+test-parameter-injector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.12" }
+test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+test-mockative = { module = "io.mockative:mockative", version.ref = "mockative" }
+test-mockative-processor = { module = "io.mockative:mockative-processor", version.ref = "mockative" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
+# google-gms-googleservices = { id = "com.google.gms.google-services", version.ref = "google-services-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinx-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+moko-swift = { id = "dev.icerock.moko.kswift", version.ref = "moko-swift" }

@@ -1,16 +1,37 @@
+import com.codingfeline.buildkonfig.gradle.TargetConfigDsl
+
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.buildKonfig)
+    alias(libs.plugins.moko.resources)
+    alias(libs.plugins.moko.swift)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.kotlinx.parcelize)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
-    androidTarget {
+    targets.all {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                // Ignore warnings for non-stable expect/ actual classes.
+                freeCompilerArgs += "-Xexpect-actual-classes"
             }
         }
     }
+
+    applyDefaultHierarchyTemplate()
+
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = ProjectJavaVersion.string
+            }
+        }
+    }
+
+    jvmToolchain(ProjectJavaVersion.integer)
     
     listOf(
         iosX64(),
@@ -25,18 +46,164 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            //put your multiplatform dependencies here
+            /**
+             * Make sure any new dependencies are added to license_plist.yml for iOS
+             * (https://github.com/mono0926/LicensePlist)
+             */
+
+            /* Networking */
+            implementation(libs.ktor.core)
+            implementation(libs.ktor.contentnegotiation)
+            implementation(libs.ktor.resources)
+            implementation(libs.ktor.serialization)
+            implementation(libs.ktor.serialization.kotlixjson)
+            implementation(libs.ktor.logging)
+            implementation(libs.ktor.auth)
+
+            /* Coroutines */
+            implementation(libs.kotlinx.coroutines.core)
+
+            /* Localisation */
+            api(libs.moko.resources)
+            api(libs.moko.swift)
+
+            /* DI */
+            api(libs.koin.core)
+
+            /* Datetime */
+            api(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
-            implementation(libs.kotlin.test)
+            implementation(kotlin("test"))
+            /* Networking */
+            implementation(libs.test.ktor.mock)
+
+            /* Mocking */
+            implementation(libs.test.mockative)
+
+            /* Coroutines */
+            implementation(libs.test.turbine)
+            implementation(libs.kotlinx.coroutines.test)
+
+            /* Localisation */
+            api(libs.moko.resources.test)
+        }
+        androidMain.dependencies {
+            /* Networking */
+            implementation(libs.ktor.okhttp)
+
+            /* Coroutines */
+            implementation(libs.kotlinx.coroutines.android)
+
+            /* ViewModel */
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.compose.runtime)
+
+            /* DI */
+            api(libs.koin.android)
+
+            /* Localisation */
+            api(libs.moko.resources.compose)
+        }
+        iosMain.dependencies {
+            /* Networking */
+            implementation(libs.ktor.darwin)
+        }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(ProjectJavaVersion.integer))
+    }
+}
+
+buildkonfig {
+    packageName = "com.geotrainer.shared"
+    exposeObjectWithName = "BuildKonfig"
+
+    val flavor = project.buildConfigFlavor()
+
+    if (flavor == null) {
+        // Flavor isn't defined, codegen isn't required.
+        defaultConfigs { /* No-op */ }
+        return@buildkonfig
+    }
+
+    logger.warn("Generating Config: Environment: ${flavor.raw}")
+
+    defaultConfigs {
+        // Add default configs here
+    }
+
+    targetConfigs {
+        android {
+            // Add android configs here
+        }
+        ios {
+            // Add ios configs here
+        }
+    }
+
+    targetConfigs(AppProductFlavor.Dev.raw) {
+        common {
+            // Add dev config here
+        }
+    }
+
+    targetConfigs(AppProductFlavor.Uat.raw) {
+        common {
+            // Add uat config here
+        }
+    }
+
+    targetConfigs(AppProductFlavor.Prod.raw) {
+        common {
+            // Add prod config here
         }
     }
 }
 
 android {
     namespace = "com.geotrainer.shared"
-    compileSdk = 34
+    compileSdk = Android.compileSdk
     defaultConfig {
-        minSdk = 28
+        minSdk = Android.minSdk
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    // This solves the following issue:
+    // "Expected object 'MR' has no actual declaration in module <mpp-library_debug> for JVM"
+    // https://github.com/icerockdev/moko-resources/issues/510
+    // but should be removed when they end up fixing it
+    sourceSets {
+        getByName("main").java.srcDirs("build/generated/moko/androidMain/src")
     }
 }
+
+fun NamedDomainObjectContainer<TargetConfigDsl>.android(block: TargetConfigDsl.() -> Unit) {
+    create(AppTarget.Android.raw) { block(this) }
+}
+
+fun NamedDomainObjectContainer<TargetConfigDsl>.ios(block: TargetConfigDsl.() -> Unit) {
+    create(AppTarget.Ios.raw) { block(this) }
+}
+
+fun NamedDomainObjectContainer<TargetConfigDsl>.common(block: TargetConfigDsl.() -> Unit) {
+    android { block(this) }
+    ios { block(this) }
+}
+
+
