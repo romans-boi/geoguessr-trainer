@@ -1,4 +1,4 @@
-package com.geotrainer.android
+package com.geotrainer.shared
 
 interface Platform {
     val name: String

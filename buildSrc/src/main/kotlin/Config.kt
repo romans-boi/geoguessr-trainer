@@ -35,3 +35,9 @@ enum class Dimension(val raw: String) {
     Environment("environment"),
     ;
 }
+
+enum class BuildConfigField(val raw: String) {
+    ApiBaseUrl("apiBaseUrl"),
+    IsDev("isDev")
+    ;
+}

@@ -1,5 +1,6 @@
-package com.geotrainer.android
+package com.geotrainer.shared
 
+import com.geotrainer.shared.Platform
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {

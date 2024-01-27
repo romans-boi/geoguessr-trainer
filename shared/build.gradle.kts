@@ -1,3 +1,5 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 import com.codingfeline.buildkonfig.gradle.TargetConfigDsl
 
 plugins {
@@ -134,6 +136,9 @@ buildkonfig {
 
     defaultConfigs {
         // Add default configs here
+        booleanField(BuildConfigField.IsDev, false)
+
+        register(Type.STRING, BuildConfigField.ApiBaseUrl, nullable = false)
     }
 
     targetConfigs {
@@ -148,18 +153,24 @@ buildkonfig {
     targetConfigs(AppProductFlavor.Dev.raw) {
         common {
             // Add dev config here
+            booleanField(BuildConfigField.IsDev, true)
+            stringField(BuildConfigField.ApiBaseUrl, "http://localhost:8080/")
         }
     }
 
     targetConfigs(AppProductFlavor.Uat.raw) {
         common {
             // Add uat config here
+            // FIXME Actual URL TBD
+            stringField(BuildConfigField.ApiBaseUrl, "http://localhost:8080/")
         }
     }
 
     targetConfigs(AppProductFlavor.Prod.raw) {
         common {
             // Add prod config here
+            // FIXME Actual URL TBD
+            stringField(BuildConfigField.ApiBaseUrl, "http://localhost:8080/")
         }
     }
 }
@@ -206,4 +217,26 @@ fun NamedDomainObjectContainer<TargetConfigDsl>.common(block: TargetConfigDsl.()
     ios { block(this) }
 }
 
+fun TargetConfigDsl.register(
+    type: FieldSpec.Type,
+    name: BuildConfigField,
+    nullable: Boolean = false,
+) {
+    buildConfigField(type, name.raw, if (nullable) null else "", nullable = nullable)
+}
+
+fun TargetConfigDsl.stringField(
+    name: BuildConfigField,
+    value: String?,
+    nullable: Boolean = false,
+) {
+    buildConfigField(FieldSpec.Type.STRING, name.raw, value, nullable = nullable)
+}
+
+fun TargetConfigDsl.booleanField(
+    name: BuildConfigField,
+    value: Boolean,
+) {
+    buildConfigField(FieldSpec.Type.BOOLEAN, name.raw, value.toString())
+}
 
