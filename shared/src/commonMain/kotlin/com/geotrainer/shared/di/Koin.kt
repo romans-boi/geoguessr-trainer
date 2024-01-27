@@ -27,4 +27,6 @@ internal fun startKoin(modules: List<Module>, initializer: KoinApplication.() ->
         }
 
         modules(serviceModule(Logger.takeIf { BuildKonfig.isDev }))
+        modules(repositoryModule())
+        modules(useCaseModule())
     }
