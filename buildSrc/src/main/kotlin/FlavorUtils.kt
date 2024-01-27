@@ -55,14 +55,6 @@ fun Gradle.extractFlavorFromStartTasks(): AppProductFlavor? {
     return flavors.firstOrNull()
 }
 
-private fun extractFlavor(task: String): AppProductFlavor? {
-    if (testTasks.filter { !it.startsWith("shared") }.any { task.contains(it) }) {
-        return AppProductFlavor.Dev
-    }
-
-    return AppProductFlavor.values().firstOrNull { task.lowercase(Locale.ROOT).contains(it.raw) }
-}
-
 private inline fun <reified T : Enum<T>> Project.valueFromProperties(
     key: String,
     enumMapper: (T) -> String
@@ -72,4 +64,12 @@ private inline fun <reified T : Enum<T>> Project.valueFromProperties(
     enumValues<T>().firstOrNull {
         enumMapper(it) == propertyString
     }
+}
+
+private fun extractFlavor(task: String): AppProductFlavor? {
+    if (testTasks.filter { !it.startsWith("shared") }.any { task.contains(it) }) {
+        return AppProductFlavor.Dev
+    }
+
+    return AppProductFlavor.values().firstOrNull { task.lowercase(Locale.ROOT).contains(it.raw) }
 }

@@ -55,13 +55,6 @@ fun setupEnvironmentProperties() {
 
 project.afterEvaluate {
     tasks.getByPath(":shared:preBuild").apply {
-        dependsOn(task("installGitHooks", Copy::class) {
-            from(
-                File(rootProject.rootDir, "scripts/hooks/pre-commit"),
-            )
-            into { File(rootProject.rootDir, ".git/hooks") }
-
-            fileMode = 0b111101101
-        })
+        dependsOn(":spotlessApply")
     }
 }

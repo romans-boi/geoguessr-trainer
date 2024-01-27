@@ -5,7 +5,6 @@ import com.geotrainer.shared.utils.LocalizableStringsAccessorImpl
 import org.koin.core.KoinApplication
 import org.koin.core.module.Module
 import org.koin.core.scope.Scope
-import org.koin.dsl.module
 
 fun Scope.getDiHook() = lazy { DiHook(getKoin()) }.value
 

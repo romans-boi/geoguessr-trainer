@@ -1,7 +1,8 @@
 package com.geotrainer.shared.di
 
-import co.touchlab.kermit.Logger
 import com.geotrainer.shared.BuildKonfig
+
+import co.touchlab.kermit.Logger
 import org.koin.core.Koin
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin

@@ -1,3 +1,5 @@
+@file:Suppress("IDENTIFIER_LENGTH", "TYPE_ALIAS")
+
 package com.geotrainer.shared.type
 
 import kotlinx.coroutines.async
@@ -6,7 +8,6 @@ import kotlinx.coroutines.coroutineScope
 /**
  * The disjoint union of two types
  */
-
 sealed class DataResult<out A, out E> {
     fun isSuccess() = this is Success
     fun isFailure() = this is Failure

@@ -1,6 +1,5 @@
 package com.geotrainer.shared.di
 
-import co.touchlab.kermit.LogWriter
 import com.geotrainer.shared.utils.LocalizableStringsAccessor
 import com.geotrainer.shared.utils.LocalizableStringsAccessorImpl
 import org.koin.core.Koin

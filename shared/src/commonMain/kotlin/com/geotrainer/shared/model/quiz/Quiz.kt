@@ -8,4 +8,3 @@ data class Quiz(
     val title: String,
     val description: String
 )
-

@@ -6,8 +6,10 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 
+@Suppress("MAGIC_NUMBER")
 internal fun HttpStatusCode.isClientError(): Boolean = value in (400 until 500)
 
+@Suppress("MAGIC_NUMBER")
 internal fun HttpStatusCode.isServerError(): Boolean = value in (500 until 600)
 
 internal inline fun <reified T> HttpRequestBuilder.setJsonBody(obj: T) {

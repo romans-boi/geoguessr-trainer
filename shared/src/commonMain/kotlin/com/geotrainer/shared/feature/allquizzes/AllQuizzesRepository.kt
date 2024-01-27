@@ -27,4 +27,3 @@ internal class AllQuizzesRepositoryImpl(
             get(AllQuizzesEndpoints.AllQuizzes())
         }.tapSuccess { quizSectionCache = it }
 }
-
