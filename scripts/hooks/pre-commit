@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Fail if any command fails
+set -e
+
 # Store staged changes into a variable
 stagedFiles=$(git diff --staged --name-only)
 
