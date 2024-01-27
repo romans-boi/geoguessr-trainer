@@ -74,6 +74,9 @@ kotlin {
 
             /* Datetime */
             api(libs.kotlinx.datetime)
+
+            /* Logging */
+            api(libs.kermit.core)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

@@ -18,6 +18,7 @@ import kotlin.time.Duration.Companion.seconds
 
 internal object KtorClientProvider {
     private const val timeout = 30.0
+    const val logTag = "HTTP Client"
 
     fun provideClient(
         logger: Logger?,

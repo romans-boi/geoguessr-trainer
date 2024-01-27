@@ -57,7 +57,7 @@ project.afterEvaluate {
     tasks.getByPath(":shared:preBuild").apply {
         dependsOn(task("installGitHooks", Copy::class) {
             from(
-                File(rootProject.rootDir, "scripts/hooks/pre-commit"),
+                File(rootProject.rootDir, "scripts/hooks/pre-commit.sh"),
             )
             into { File(rootProject.rootDir, ".git/hooks") }
 

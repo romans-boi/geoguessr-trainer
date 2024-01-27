@@ -24,7 +24,7 @@ ktor = "2.3.7" # https://github.com/ktorio/ktor
 activity = "1.8.2" # https://developer.android.com/jetpack/androidx/releases/activity
 core = "1.12.0" # https://developer.android.com/jetpack/androidx/releases/core
 core-splash = "1.0.1" # https://developer.android.com/jetpack/androidx/releases/core
-lifecycle = "2.6.2" # https://developer.android.com/jetpack/androidx/releases/lifecycle
+lifecycle = "2.7.0" # https://developer.android.com/jetpack/androidx/releases/lifecycle
 
 # Build
 buildKonfig = "0.15.0" # https://github.com/yshrsmz/BuildKonfig
@@ -47,6 +47,9 @@ diktat = "1.2.5"
 
 # Swift
 swiftPoet = "1.5.0"
+
+# Logging
+kermit = "1.2.2"
 
 
 [libraries]
@@ -84,6 +87,9 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose
 # firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 # firebase-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 # firebase-appcheckdebug = { module = "com.google.firebase:firebase-appcheck-debug"}
+
+# Logging
+kermit-core = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 # Accompanist
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
