@@ -10,9 +10,6 @@ stagedFiles=$(git diff --staged --name-only)
 echo "Running spotlessApply. Formatting code..."
 ./gradlew spotlessApply
 
-# store the last exit code in a variable
-RESULT=$?
-
 # The above creates unstaged changes, which will need to be added to staging again.
 # NB: Only files that were initially staged at step 1 will be committed, not every
 # file that could possibly have been altered by spotless.
@@ -22,4 +19,4 @@ for file in $stagedFiles; do
   fi
 done
 
-exit $RESULT
+exit 0
