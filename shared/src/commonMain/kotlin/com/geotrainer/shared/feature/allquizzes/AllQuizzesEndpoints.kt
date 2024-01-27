@@ -6,4 +6,3 @@ internal object AllQuizzesEndpoints {
     @Resource("quizzes")
     internal class AllQuizzes
 }
-
