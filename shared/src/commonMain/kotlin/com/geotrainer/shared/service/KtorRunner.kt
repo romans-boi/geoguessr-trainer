@@ -26,6 +26,14 @@ internal class KtorRunner(
     internal val client: HttpClient,
     private val ioContext: CoroutineContext = Dispatchers.IO
 ) {
+
+    internal suspend inline operator fun <reified SuccessType : Any> invoke(
+        crossinline block: RequestBlock,
+    ) = invoke<SuccessType>(
+        block
+    ) { body<SuccessType>() }
+
+
     internal suspend inline fun <reified SuccessType : Any> runwWithCustomParsing(
         crossinline block: RequestBlock,
         crossinline parsingBlock: ParseBlock<SuccessType>,
