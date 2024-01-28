@@ -157,7 +157,9 @@ buildkonfig {
         common {
             // Add dev config here
             booleanField(BuildConfigField.IsDev, true)
-            stringField(BuildConfigField.ApiBaseUrl, "http://localhost:8080/")
+            // NOTE: Currently the dev server is not deployed anywhere, so you need to run the
+            // server locally and set the correct address (10.0.2.2 is used for emulators)
+            stringField(BuildConfigField.ApiBaseUrl, "http://10.0.2.2:8080/")
         }
     }
 
