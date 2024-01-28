@@ -55,6 +55,6 @@ fun setupEnvironmentProperties() {
 
 project.afterEvaluate {
     tasks.getByPath(":shared:preBuild").apply {
-        // dependsOn(":spotlessApply")
+        dependsOn(":spotlessApply")
     }
 }
