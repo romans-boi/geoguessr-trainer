@@ -26,12 +26,18 @@ enum class AppBuildType(val raw: String) {
 
 enum class AppProductFlavor(val raw: String) {
     Dev("dev"),
-    Uat("uat"),
     Prod("prod"),
+    Uat("uat"),
     ;
 }
 
 enum class Dimension(val raw: String) {
     Environment("environment"),
+    ;
+}
+
+enum class BuildConfigField(val raw: String) {
+    ApiBaseUrl("apiBaseUrl"),
+    IsDev("isDev"),
     ;
 }
