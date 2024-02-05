@@ -10,7 +10,7 @@ import com.geotrainer.android.ui.theme.GeoTrainerTheme
 
 @Composable
 fun PreviewSurface(
-    color: Color = Color.Cyan,
+    color: Color = GeoTrainerTheme.colors.Background,
     fontScale: Float = LocalDensity.current.fontScale,
     density: Float = LocalDensity.current.density,
     content: @Composable () -> Unit

@@ -24,10 +24,10 @@ fun GeoTrainerTheme(
         // These are only needed for defining default background + content colour
         // across the app
         val materialColorScheme = lightColorScheme(
-            surface = GeoTrainerTheme.colors.White,
-            onSurface = GeoTrainerTheme.colors.Black,
-            background = GeoTrainerTheme.colors.White,
-            onBackground = GeoTrainerTheme.colors.Black
+            surface = GeoTrainerTheme.colors.Background,
+            onSurface = GeoTrainerTheme.colors.DarkBlue,
+            background = GeoTrainerTheme.colors.Background,
+            onBackground = GeoTrainerTheme.colors.DarkBlue
         )
 
         MaterialTheme(

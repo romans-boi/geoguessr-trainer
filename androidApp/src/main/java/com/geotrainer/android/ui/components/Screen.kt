@@ -1,6 +1,7 @@
 package com.geotrainer.android.ui.components
 
 import androidx.activity.SystemBarStyle
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.geotrainer.android.utils.enableEdgeToEdge
 
 data class SystemBarIconsColor(
@@ -68,7 +70,7 @@ fun Screen(
     }
 
     LifecycleSideEffect(lifecycleObserver = lifecycleObserver) {
-        // BottomNavigationBarScreenScaffold(isBottomNav = isBottomNav, content = content)
+        Box { content() }
     }
 }
 
@@ -77,6 +79,7 @@ private fun SystemUiIconsColorSideEffect(
     systemBarIconsColor: SystemBarIconsColor?,
 ) {
     val context = LocalContext.current
+    val colors = GeoTrainerTheme.colors
 
     SideEffect {
         systemBarIconsColor?.let {
@@ -88,19 +91,19 @@ private fun SystemUiIconsColorSideEffect(
                     StatusBarIconsColor.Dark -> SystemBarStyle
                         .light(
                             scrim = Color.Transparent.toArgb(),
-                            darkScrim = Color.Black.toArgb()
+                            darkScrim = colors.DarkBlue.toArgb()
                         )
                 },
                 navigationBar = when (systemBarIconsColor.navigationBar) {
                     NavigationBarIconsColor.Light -> SystemBarStyle
                         .dark(
-                            scrim = Color.Black.toArgb()
+                            scrim = colors.DarkBlue.toArgb()
                         )
 
                     NavigationBarIconsColor.Dark -> SystemBarStyle
                         .light(
-                            scrim = Color.White.toArgb(),
-                            darkScrim = Color.Black.toArgb()
+                            scrim = colors.White.toArgb(),
+                            darkScrim = colors.DarkBlue.toArgb()
                         )
                 },
             )

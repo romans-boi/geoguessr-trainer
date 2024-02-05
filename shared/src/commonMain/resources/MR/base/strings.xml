@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+
+    <!-- Bottom Nav -->
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_quizzes">Quizzes</string>
+    <string name="bottom_nav_saved">Saved</string>
+    <string name="bottom_nav_settings">Settings</string>
+
+</resources>

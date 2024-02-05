@@ -76,7 +76,7 @@ fun ModalBottomSheetScaffold(
     ) {
         Scaffold(
             content = content,
-            containerColor = Color.Cyan,
+            containerColor = GeoTrainerTheme.colors.Background,
             contentWindowInsets = WindowInsets(0.dp)
         )
     }
@@ -98,7 +98,7 @@ private fun AppNavigation(
         navGraph = NavGraphs.root,
         engine = navHostEngine,
         navController = navController,
-        modifier = modifier.background(Color.Cyan),
+        modifier = modifier.background(GeoTrainerTheme.colors.Background),
         dependenciesContainerBuilder = {
             // this: DependenciesContainerBuilder<*>
             dependency(rootScaffoldPaddingValues)

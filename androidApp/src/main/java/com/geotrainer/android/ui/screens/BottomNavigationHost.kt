@@ -11,13 +11,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import com.geotrainer.android.ui.components.compositionlocal.LocalBottomInset
 import com.geotrainer.android.ui.components.navigation.BottomBar
 import com.geotrainer.android.ui.components.navigation.RootDestinationsNavigator
+import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
@@ -41,7 +41,8 @@ fun BottomNavigationHost(
 
     val bottomNavHeight = 64.dp  // TODO dimensionResource(id = R.dimen.design_bottom_navigation_height)
 
-    Scaffold(containerColor = Color.White,
+    Scaffold(
+        containerColor = GeoTrainerTheme.colors.Background,
         bottomBar = {
             BottomBar(
                 modifier = Modifier
@@ -59,7 +60,7 @@ fun BottomNavigationHost(
         ) {
             DestinationsNavHost(
                 modifier = Modifier
-                    .background(Color.Cyan)
+                    .background(GeoTrainerTheme.colors.Background)
                     .padding(bottom = padding.calculateBottomPadding()),
                 navController = navController,
                 navGraph = NavGraphs.bottomNavigationGraph,
