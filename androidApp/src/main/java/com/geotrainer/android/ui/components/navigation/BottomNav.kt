@@ -1,6 +1,5 @@
 package com.geotrainer.android.ui.components.navigation
 
-import GeoTrainer.shared.MR
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+
 import com.geotrainer.android.R
 import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.ui.screens.NavGraphs
@@ -36,6 +36,8 @@ import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.geotrainer.android.utils.navigateToTopLevelRoute
 import com.geotrainer.android.utils.nonScaledSp
 import com.geotrainer.android.utils.resource
+
+import GeoTrainer.shared.MR
 import com.ramcosta.composedestinations.annotation.NavGraph
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.popBackStack

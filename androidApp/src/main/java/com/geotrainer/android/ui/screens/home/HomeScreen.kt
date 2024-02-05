@@ -25,7 +25,7 @@ fun HomeScreen(
     navigator: DestinationsNavigator,
 ) {
     Screen(
-        onScreenView = { /* TODO*/ }, systemBarIconsColor = SystemBarIconsColor(
+        systemBarIconsColor = SystemBarIconsColor(
             statusBar = StatusBarIconsColor.Dark,
             navigationBar = NavigationBarIconsColor.Light
         )

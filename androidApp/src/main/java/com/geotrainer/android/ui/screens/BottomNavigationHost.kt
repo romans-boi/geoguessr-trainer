@@ -39,7 +39,7 @@ fun BottomNavigationHost(
     val engine = rememberAnimatedNavHostEngine()
     val navController = engine.rememberNavController()
 
-    val bottomNavHeight = 64.dp  // TODO dimensionResource(id = R.dimen.design_bottom_navigation_height)
+    val bottomNavHeight = 64.dp
 
     Scaffold(
         containerColor = GeoTrainerTheme.colors.Background,

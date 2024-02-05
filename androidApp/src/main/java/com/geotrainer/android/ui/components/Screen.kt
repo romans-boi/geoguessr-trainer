@@ -33,7 +33,7 @@ enum class NavigationBarIconsColor {
 
 @Composable
 fun Screen(
-    onScreenView: () -> Unit,
+    onScreenView: (() -> Unit)? = null,
     onScreenResume: (() -> Unit)? = null,
     onScreenStop: (() -> Unit)? = null,
     onScreenFirstView: (() -> Unit)? = null,
@@ -52,7 +52,7 @@ fun Screen(
     val lifecycleObserver = remember {
         object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {
-                currentOnScreenView()
+                currentOnScreenView?.invoke()
                 if (visits == 0) {
                     currentOnScreenFirstView?.invoke()
                 }

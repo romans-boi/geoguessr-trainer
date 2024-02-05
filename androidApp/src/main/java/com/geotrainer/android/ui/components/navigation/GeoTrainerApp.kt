@@ -1,6 +1,5 @@
 package com.geotrainer.android.ui.components.navigation
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,6 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.dependency
 
 @Composable
-@Suppress("SAY_NO_TO_VAR")
 fun GeoTrainerScaffold(
     appNavigators: AppNavigators
 ) {
@@ -45,7 +43,6 @@ fun GeoTrainerScaffold(
     }
 }
 
-@SuppressLint("ComposeM2Api")
 @OptIn(
     ExperimentalMaterialApi::class,
     ExperimentalMaterialNavigationApi::class,
