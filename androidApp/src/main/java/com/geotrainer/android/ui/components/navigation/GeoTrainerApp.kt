@@ -22,8 +22,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.geotrainer.android.MyApplicationTheme
 import com.geotrainer.android.ui.screens.NavGraphs
+import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
@@ -34,7 +34,7 @@ import com.ramcosta.composedestinations.navigation.dependency
 fun GeoTrainerScaffold(
     appNavigators: AppNavigators
 ) {
-    MyApplicationTheme {
+    GeoTrainerTheme {
         ModalBottomSheetScaffold(appNavigators) { paddingValues ->
             AppNavigation(
                 modifier = Modifier.padding(paddingValues),

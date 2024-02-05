@@ -6,7 +6,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
-import com.geotrainer.android.MyApplicationTheme
+import com.geotrainer.android.ui.theme.GeoTrainerTheme
 
 @Composable
 fun PreviewSurface(
@@ -14,7 +14,7 @@ fun PreviewSurface(
     fontScale: Float = LocalDensity.current.fontScale,
     density: Float = LocalDensity.current.density,
     content: @Composable () -> Unit
-) = MyApplicationTheme {
+) = GeoTrainerTheme {
     CompositionLocalProvider(LocalDensity provides Density(fontScale, density)) {
         Surface(color = color, content = content)
     }
