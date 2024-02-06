@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.ui.theme.GeoTrainerTheme
 
+private const val previewGroup = "Tabs"
+
 data class TabConfig(val label: String)
 
 @Composable
@@ -69,7 +71,7 @@ fun GeoTrainerScrollableTabRow(
 }
 
 @Composable
-@Preview(name = "Scrollable tab row", group = "Tabs")
+@Preview(name = "Scrollable tab row", group = previewGroup)
 fun ScrollableTabRowPreview() = PreviewSurface {
     var selected by remember { mutableStateOf(0) }
     val tabs = listOf(

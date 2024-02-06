@@ -7,4 +7,16 @@
     <string name="bottom_nav_saved">Saved</string>
     <string name="bottom_nav_settings">Settings</string>
 
+    <!-- Continent -->
+    <string name="continent_africa">Africa</string>
+    <string name="continent_asia">Asia</string>
+    <string name="continent_europe">Europe</string>
+    <string name="continent_north_america">North America</string>
+    <string name="continent_south_america">South America</string>
+    <string name="continent_oceania">Oceania</string>
+    <string name="continent_generic">Generic</string>
+
+    <!-- All Quizzes Screen -->
+    <string name="all_quizzes_screen_all_tab">All</string>
+
 </resources>
