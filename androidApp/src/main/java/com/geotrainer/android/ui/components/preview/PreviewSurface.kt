@@ -15,7 +15,7 @@ fun PreviewSurface(
     density: Float = LocalDensity.current.density,
     content: @Composable () -> Unit
 ) = GeoTrainerTheme {
-    CompositionLocalProvider(LocalDensity provides Density(fontScale, density)) {
+    CompositionLocalProvider(LocalDensity provides Density(density, fontScale)) {
         Surface(color = color, content = content)
     }
 }

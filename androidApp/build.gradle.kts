@@ -116,6 +116,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.ui.toolingpreview)
+    implementation(libs.androidx.compose.lifecycle)
     implementation(libs.coil.compose)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
