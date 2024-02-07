@@ -1,16 +1,21 @@
 package com.geotrainer.android.ui.screens.quizzes
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.material3.Icon
@@ -25,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -33,12 +39,12 @@ import com.geotrainer.android.ui.components.GeoTrainerCard
 import com.geotrainer.android.ui.components.GeoTrainerScrollableTabRow
 import com.geotrainer.android.ui.components.NavigationBarIconsColor
 import com.geotrainer.android.ui.components.Screen
-import com.geotrainer.android.ui.components.ScrollableScreenSlotWithHeader
 import com.geotrainer.android.ui.components.StatusBarIconsColor
 import com.geotrainer.android.ui.components.SystemBarIconsColor
 import com.geotrainer.android.ui.components.TabConfig
 import com.geotrainer.android.ui.components.navigation.FadeTransitions
 import com.geotrainer.android.ui.components.navigation.navgraphs.QuizzesNavGraph
+import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.geotrainer.android.utils.colorIndicator
 import com.geotrainer.android.utils.localizedString
@@ -50,27 +56,30 @@ import com.geotrainer.shared.viewmodel.screens.allquizzes.ContinentTab
 import com.geotrainer.shared.viewmodel.screens.allquizzes.ContinentTabType
 
 import GeoTrainer.shared.MR
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.tooling.preview.Preview
-import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 private const val previewGroup = "All Quizzes Screen"
 
-@Suppress(
-    "MAGIC_NUMBER",
-    "TYPE_ALIAS",
-    "EMPTY_BLOCK_STRUCTURE_ERROR"
-)
-private fun LazyListScope.tabsMainContent(
+@Suppress("MAGIC_NUMBER")
+private fun LazyListScope.allQuizzesDataContent(
     state: AllQuizzesViewModel.State.Data,
     selectedTabIndex: Int,
-    onSelectTab: (Int) -> Unit,
-    onOpenQuiz: (quizId: String, continent: Continent?) -> Unit
+    tabs: List<ContinentTab>,
+    onOpenQuiz: (quiz: Quiz) -> Unit,
 ) {
+    val selectedTabQuizzes = tabs[selectedTabIndex].items
 
+    selectedTabQuizzes.map { quiz ->
+        item(key = "${quiz.quizId}${quiz.continent}") {
+            QuizCard(
+                quiz = quiz,
+                onClick = { onOpenQuiz(quiz) }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
 }
 
 @QuizzesNavGraph(start = true)
@@ -92,7 +101,7 @@ fun AllQuizzesScreen(
             NavigationBarIconsColor.Light
         )
     ) {
-        AllQuizzesScreenContent(
+        AllQuizzesScreenSurface(
             state = state,
             selectedTabIndex = selectedTabIndex,
             onSelectTab = { tabIndex ->
@@ -107,9 +116,7 @@ fun AllQuizzesScreen(
 @Preview(name = "Quiz Card", group = previewGroup)
 fun QuizCardPreview() = PreviewSurface {
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         (listOf(null) + Continent.entries).map { continent ->
             QuizCard(
@@ -126,6 +133,46 @@ fun QuizCardPreview() = PreviewSurface {
     }
 }
 
+@Composable
+private fun AllQuizzesScreenSurface(
+    state: AllQuizzesViewModel.State,
+    selectedTabIndex: Int,
+    onSelectTab: (Int) -> Unit,
+    onOpenQuiz: (quiz: Quiz) -> Unit
+) {
+    // For this screen specifically, we need the status bar to be there at all times so the sticky
+    // tab row doesn't go behind the status bar
+    Column(modifier = Modifier.fillMaxSize()) {
+        Spacer(
+            modifier = Modifier
+                .background(GeoTrainerTheme.colors.DarkBlue)
+                .fillMaxWidth()
+                .statusBarsPadding()
+        )
+
+        Box {
+            // Slight hack to hide the light-blue background peeking when the user over-scrolls.
+            // The alternative solution is to disable overscroll, but that makes the scroll feel
+            // unnatural for an Android user
+            Spacer(
+                modifier = Modifier
+                    .background(GeoTrainerTheme.colors.DarkBlue)
+                    .fillMaxWidth()
+                    .height(4.dp)
+                    .offset(y = (-2).dp)
+            )
+
+            AllQuizzesScreenContent(
+                state = state,
+                selectedTabIndex = selectedTabIndex,
+                onSelectTab = onSelectTab,
+                onOpenQuiz = { /* TODO */ }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
 @Suppress("TYPE_ALIAS")
 @Composable
 private fun AllQuizzesScreenContent(
@@ -134,10 +181,14 @@ private fun AllQuizzesScreenContent(
     onSelectTab: (Int) -> Unit,
     onOpenQuiz: (quiz: Quiz) -> Unit
 ) {
-    ScrollableScreenSlotWithHeader(
-        headerColor = GeoTrainerTheme.colors.DarkBlue,
-        headerContent = {
-            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+    LazyColumn {
+        item(key = "HeaderColumn") {
+            Column(
+                modifier = Modifier
+                    .background(color = GeoTrainerTheme.colors.DarkBlue)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
                 Text(
                     text = "Quizzes",
                     style = MaterialTheme.typography.headlineMedium,
@@ -145,7 +196,9 @@ private fun AllQuizzesScreenContent(
                     color = GeoTrainerTheme.colors.LightBlue
                 )
             }
+        }
 
+        stickyHeader(key = "StickyHeaderTabRow") {
             val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
 
             tabs?.let { tabsNotNull ->
@@ -159,46 +212,27 @@ private fun AllQuizzesScreenContent(
                         }
 
                         TabConfig(label = name)
-                    }
+                    },
                 )
             }
-        },
+        }
 
-        ) {
         when (state) {
             is AllQuizzesViewModel.State.Data -> {
-                Spacer(modifier = Modifier.height(8.dp))
-                AllQuizzesDataContent(
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+
+                allQuizzesDataContent(
                     state = state,
-                    onOpenQuiz = onOpenQuiz,
                     selectedTabIndex = selectedTabIndex,
                     tabs = state.tabs,
+                    onOpenQuiz = onOpenQuiz,
                 )
+
+                item { Spacer(modifier = Modifier.height(16.dp)) }
             }
 
-            AllQuizzesViewModel.State.Error -> Text("Error")
-            AllQuizzesViewModel.State.Loading -> Text("Loading")
-        }
-    }
-}
-
-@Suppress("TYPE_ALIAS")
-@Composable
-private fun AllQuizzesDataContent(
-    state: AllQuizzesViewModel.State.Data,
-    onOpenQuiz: (quiz: Quiz) -> Unit,
-    selectedTabIndex: Int,
-    tabs: List<ContinentTab>
-) {
-    val selectedTabQuizzes = tabs[selectedTabIndex].items
-
-    Column {
-        selectedTabQuizzes.map { quiz ->
-            QuizCard(
-                quiz = quiz,
-                onClick = { onOpenQuiz(quiz) }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            AllQuizzesViewModel.State.Error -> item { Text("Error") }
+            AllQuizzesViewModel.State.Loading -> item { Text("Loading") }
         }
     }
 }
@@ -211,7 +245,7 @@ private fun QuizCard(
     GeoTrainerCard(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(),
+            .padding(horizontal = 16.dp),
         onClick = onClick
     ) {
         Row {

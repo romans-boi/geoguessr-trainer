@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -51,12 +50,10 @@ fun GeoTrainerScrollableTabRow(
         indicator = { tabPositions ->
             TabIndicator(
                 tabPosition = tabPositions[selectedTabIndex],
-                color = GeoTrainerTheme.colors.DarkGreen  // tabs[selectedTabIndex].color
+                color = GeoTrainerTheme.colors.DarkGreen
             )
         },
-        divider = {
-            // TabDivider()
-        }
+        divider = { /* Empty so we don't have any divider */ }
     ) {
         tabs.forEachIndexed { index, tab ->
             Tab(
@@ -106,12 +103,6 @@ private fun TabIndicator(tabPosition: TabPosition, color: Color) =
         color = color,
         height = 4.dp,
     )
-
-@Composable
-private fun TabDivider() = HorizontalDivider(
-    thickness = 1.dp,
-    color = GeoTrainerTheme.colors.DarkGreen
-)
 
 @Composable
 private fun Tab(
