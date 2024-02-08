@@ -64,7 +64,6 @@ private const val previewGroup = "All Quizzes Screen"
 
 @Suppress("MAGIC_NUMBER")
 private fun LazyListScope.allQuizzesDataContent(
-    state: AllQuizzesViewModel.State.Data,
     selectedTabIndex: Int,
     tabs: List<ContinentTab>,
     onOpenQuiz: (quiz: Quiz) -> Unit,
@@ -110,6 +109,44 @@ fun AllQuizzesScreen(
             onOpenQuiz = { /* TODO */ }
         )
     }
+}
+
+@Composable
+@Preview(name = "Main Content", group = previewGroup)
+fun AllQuizzesScreenPreview() = PreviewSurface {
+    AllQuizzesScreenSurface(
+        state = AllQuizzesViewModel.State.Data(
+            tabs = listOf(
+                ContinentTab(
+                    tabType = ContinentTabType.All, items = listOf(
+                        Quiz(
+                            quizId = "1",
+                            title = "First Quiz",
+                            description = "",
+                            continent = null
+                        ),
+                        Quiz(
+                            quizId = "2",
+                            title = "Quiz 2",
+                            description = "",
+                            continent = Continent.Africa
+                        ),
+                        Quiz(
+                            quizId = "3",
+                            title = "3rd quiz with quite a long name if you ask me",
+                            description = "",
+                            continent = Continent.Asia
+                        )
+                    )
+                ),
+
+                ContinentTab(ContinentTabType.Continental(continent = Continent.Asia), listOf())
+            )
+        ),
+        selectedTabIndex = 0,
+        onSelectTab = {},
+        onOpenQuiz = {}
+    )
 }
 
 @Composable
@@ -166,7 +203,7 @@ private fun AllQuizzesScreenSurface(
                 state = state,
                 selectedTabIndex = selectedTabIndex,
                 onSelectTab = onSelectTab,
-                onOpenQuiz = { /* TODO */ }
+                onOpenQuiz = onOpenQuiz
             )
         }
     }
@@ -222,7 +259,6 @@ private fun AllQuizzesScreenContent(
                 item { Spacer(modifier = Modifier.height(16.dp)) }
 
                 allQuizzesDataContent(
-                    state = state,
                     selectedTabIndex = selectedTabIndex,
                     tabs = state.tabs,
                     onOpenQuiz = onOpenQuiz,
@@ -260,7 +296,7 @@ private fun QuizCard(
                     )
             )
 
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.weight(1f).padding(16.dp)) {
                 Text(
                     text = quiz.title,
                     style = MaterialTheme.typography.bodyLarge,
@@ -274,7 +310,6 @@ private fun QuizCard(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_right),
