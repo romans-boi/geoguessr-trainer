@@ -1,6 +1,6 @@
 package com.geotrainer.shared.feature.allquizzes
 
-import com.geotrainer.shared.model.quiz.QuizSection
+import com.geotrainer.shared.model.quiz.Quiz
 import com.geotrainer.shared.service.KtorRunner
 import com.geotrainer.shared.type.ApiResult
 import com.geotrainer.shared.type.success
@@ -8,13 +8,13 @@ import com.geotrainer.shared.type.tapSuccess
 import io.ktor.client.plugins.resources.get
 
 internal interface AllQuizzesRepository {
-    suspend fun getAllQuizSections(): ApiResult<List<QuizSection>>
+    suspend fun getAllQuizzes(): ApiResult<List<Quiz>>
 }
 
 internal class AllQuizzesRepositoryImpl(
     private val ktorRunner: KtorRunner,
 ) : AllQuizzesRepository {
-    private var quizSectionCache: List<QuizSection>? = null
+    private var quizCache: List<Quiz>? = null
 
     /**
      * Either get from cache if exists, or from the server.
@@ -22,8 +22,8 @@ internal class AllQuizzesRepositoryImpl(
      * often, or that users will have the app open for an unreasonable amount of time. Worst case
      * scenario, they re-open the app  to reload
      */
-    override suspend fun getAllQuizSections() =
-        quizSectionCache?.success() ?: ktorRunner<List<QuizSection>> {
+    override suspend fun getAllQuizzes() =
+        quizCache?.success() ?: ktorRunner<List<Quiz>> {
             get(AllQuizzesEndpoints.AllQuizzes())
-        }.tapSuccess { quizSectionCache = it }
+        }.tapSuccess { quizCache = it }
 }

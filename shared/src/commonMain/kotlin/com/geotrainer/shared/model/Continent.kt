@@ -8,4 +8,8 @@ enum class Continent {
     Oceania,
     SouthAmerica,
     ;
+
+    companion object {
+        fun getAllWithNull() = listOf(null) + Continent.entries
+    }
 }
