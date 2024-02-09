@@ -1,4 +1,4 @@
-package com.geotrainer.android.ui.screens.quizzes
+package com.geotrainer.android.ui.screens.quizzes.allquizzes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -45,6 +45,7 @@ import com.geotrainer.android.ui.components.TabConfig
 import com.geotrainer.android.ui.components.navigation.FadeTransitions
 import com.geotrainer.android.ui.components.navigation.navgraphs.QuizzesNavGraph
 import com.geotrainer.android.ui.components.preview.PreviewSurface
+import com.geotrainer.android.ui.screens.destinations.QuizDetailsScreenDestination
 import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.geotrainer.android.utils.colorIndicator
 import com.geotrainer.android.utils.localizedString
@@ -106,7 +107,7 @@ fun AllQuizzesScreen(
             onSelectTab = { tabIndex ->
                 selectedTabIndex = tabIndex
             },
-            onOpenQuiz = { /* TODO */ }
+            onOpenQuiz = { navigator.navigate(QuizDetailsScreenDestination) }
         )
     }
 }
@@ -309,7 +310,6 @@ private fun QuizCard(
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
-
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_right),

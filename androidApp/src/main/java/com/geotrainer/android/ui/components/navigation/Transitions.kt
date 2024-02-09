@@ -10,7 +10,7 @@ import androidx.navigation.NavBackStackEntry
 import com.geotrainer.android.ui.screens.appDestination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 
-private const val defaultDurationMillis = 500
+private const val defaultDurationMillis = 700
 
 object FadeTransitions : DestinationStyle.Animated {
     override fun AnimatedContentTransitionScope<NavBackStackEntry>.enterTransition(): EnterTransition =
