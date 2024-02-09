@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
 
+    <!-- Common -->
+    <string name="button_back_content_description">Back</string>
+    <string name="button_close_content_description">Close</string>
+
     <!-- Bottom Nav -->
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_quizzes">Quizzes</string>
