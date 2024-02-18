@@ -173,7 +173,7 @@ private fun PrimaryButtonImpl(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     elevation: ButtonElevation? = null,
-    shape: Shape = RoundedCornerShape(28.dp),
+    shape: Shape = RoundedCornerShape(8.dp),
     colors: ButtonColors = GeoTrainerButtonDefaults.primaryColors(),
     contentPadding: PaddingValues = GeoTrainerButtonDefaults.padding,
     border: BorderStroke? = null,

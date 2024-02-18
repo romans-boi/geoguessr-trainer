@@ -20,6 +20,7 @@ import com.geotrainer.android.ui.components.Screen
 import com.geotrainer.android.ui.components.ScreenSlotWithTopAppBarAndFooter
 import com.geotrainer.android.ui.components.StatusBarIconsColor
 import com.geotrainer.android.ui.components.SystemBarIconsColor
+import com.geotrainer.android.ui.components.buttons.PrimaryButton
 import com.geotrainer.android.ui.components.navigation.PrimarySlideNavigation
 import com.geotrainer.android.ui.components.navigation.TopAppBarWithBack
 import com.geotrainer.android.ui.components.navigation.navgraphs.QuizzesNavGraph
@@ -48,7 +49,8 @@ fun QuizDetailsScreen(
     ) {
         QuizDetailsContent(
             quiz = quiz,
-            onBack = navigator::popBackStack
+            onBack = navigator::popBackStack,
+            onStartQuiz = { /* TODO */ }
         )
     }
 }
@@ -63,7 +65,8 @@ fun QuizDetailsScreenContentPreview() = PreviewSurface {
             description = "Some semi long description with a few words and so. ".repeat(n = 15),
             continent = Continent.NorthAmerica
         ),
-        onBack = {}
+        onBack = {},
+        onStartQuiz = {}
     )
 }
 
@@ -71,6 +74,7 @@ fun QuizDetailsScreenContentPreview() = PreviewSurface {
 private fun QuizDetailsContent(
     quiz: Quiz,
     onBack: () -> Unit,
+    onStartQuiz: () -> Unit,
 ) {
     val horizontalPadding = 16.dp
 
@@ -83,12 +87,15 @@ private fun QuizDetailsContent(
                     .height(4.dp)
                     .fillMaxWidth(),
             )
-            Spacer(modifier = Modifier.height(16.dp))
         },
         footer = {
-            GeoTrainerCard(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = horizontalPadding)) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            GeoTrainerCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding)
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "<Slider to let user change option 1>",
@@ -104,10 +111,18 @@ private fun QuizDetailsContent(
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(12.dp))
+            PrimaryButton(
+                text = "Start quiz!",
+                onClick = onStartQuiz,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalPadding)
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
         }
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = quiz.title,
             style = MaterialTheme.typography.headlineMedium,
