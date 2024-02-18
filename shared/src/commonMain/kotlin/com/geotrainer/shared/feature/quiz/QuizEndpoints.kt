@@ -7,7 +7,7 @@ internal object QuizEndpoints {
     @Resource("quiz")
     internal class Quiz(
         val quizId: String,
-        val continent: Continent,
+        val continent: Continent?,
         val numOfQuestions: Int,
         val numOfOptions: Int
     )

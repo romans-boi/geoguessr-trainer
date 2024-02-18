@@ -7,7 +7,7 @@ import com.geotrainer.shared.type.ApiResult
 internal interface QuizUseCase {
     suspend fun getQuiz(
         quizId: String,
-        continent: Continent,
+        continent: Continent?,
         numOfQuestions: Int,
         numOfOptions: Int
     ): ApiResult<List<QuizQuestion>>
@@ -18,7 +18,7 @@ internal class QuizUseCaseImpl(
 ) : QuizUseCase {
     override suspend fun getQuiz(
         quizId: String,
-        continent: Continent,
+        continent: Continent?,
         numOfQuestions: Int,
         numOfOptions: Int
     ) = quizApi.getQuiz(quizId, continent, numOfQuestions, numOfOptions)

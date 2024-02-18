@@ -9,7 +9,7 @@ import io.ktor.client.plugins.resources.get
 internal interface QuizApi {
     suspend fun getQuiz(
         quizId: String,
-        continent: Continent,
+        continent: Continent?,
         numOfQuestions: Int,
         numOfOptions: Int
     ): ApiResult<List<QuizQuestion>>
@@ -20,7 +20,7 @@ internal class QuizApiImpl(
 ) : QuizApi {
     override suspend fun getQuiz(
         quizId: String,
-        continent: Continent,
+        continent: Continent?,
         numOfQuestions: Int,
         numOfOptions: Int
     ) = ktorRunner<List<QuizQuestion>> {
