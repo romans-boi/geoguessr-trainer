@@ -73,8 +73,8 @@ fun PrimaryButton(
 }
 
 /**
-* Primary button that has a loading state
-* */
+ * Primary button that has a loading state
+ * */
 @Composable
 fun PrimaryLoadingButton(
     text: String,
@@ -88,7 +88,7 @@ fun PrimaryLoadingButton(
     val loadingModifier = when (loading) {
         true -> Modifier
             .alpha(0F)
-            .clearAndSetSemantics { }
+            .clearAndSetSemantics { /* No semantics */ }
         false -> Modifier
     }
 
@@ -104,7 +104,6 @@ fun PrimaryLoadingButton(
         colors = colors
     ) {
         Box(contentAlignment = Alignment.Center) {
-
             // To avoid content jumping, account for size of spinner in both loading and non loading
             // cases
             if (loading) {
@@ -121,8 +120,6 @@ fun PrimaryLoadingButton(
         }
     }
 }
-
-
 
 @Composable
 @Preview(name = "Primary button - enabled", group = previewGroup)

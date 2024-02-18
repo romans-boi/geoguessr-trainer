@@ -2,6 +2,7 @@ package com.geotrainer.android.ui.screens.home
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.geotrainer.android.ui.components.NavigationBarIconsColor
 import com.geotrainer.android.ui.components.Screen
-import com.geotrainer.android.ui.components.ScrollableScreenSlot
+import com.geotrainer.android.ui.components.ScreenSlotBasicScrollable
 import com.geotrainer.android.ui.components.StatusBarIconsColor
 import com.geotrainer.android.ui.components.SystemBarIconsColor
 import com.geotrainer.android.ui.components.navigation.FadeTransitions
@@ -36,7 +37,7 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenContent() {
-    ScrollableScreenSlot {
+    ScreenSlotBasicScrollable(contentModifier = Modifier.padding(16.dp)) {
         Text(
             text = "Welcome!",
             style = MaterialTheme.typography.headlineLarge,

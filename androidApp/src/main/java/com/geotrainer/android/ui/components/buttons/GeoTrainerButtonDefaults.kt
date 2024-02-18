@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.geotrainer.android.ui.theme.GeoTrainerTheme
 
+@Suppress("MAGIC_NUMBER")
 internal object GeoTrainerButtonDefaults {
     val padding = PaddingValues(12.dp)
 

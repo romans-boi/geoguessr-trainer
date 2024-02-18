@@ -107,7 +107,7 @@ fun AllQuizzesScreen(
             onSelectTab = { tabIndex ->
                 selectedTabIndex = tabIndex
             },
-            onOpenQuiz = { navigator.navigate(QuizDetailsScreenDestination) }
+            onOpenQuiz = { navigator.navigate(QuizDetailsScreenDestination(it)) }
         )
     }
 }

@@ -12,9 +12,9 @@ import com.geotrainer.android.ui.components.preview.PreviewSurface
 private const val previewGroup = "Spinners"
 
 enum class SpinnerSize {
-    Small,
-    Medium,
     Large,
+    Medium,
+    Small,
     ;
 
     fun toDp() = when (this) {
