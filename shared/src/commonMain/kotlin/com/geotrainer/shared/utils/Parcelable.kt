@@ -4,4 +4,5 @@ expect interface Parcelable
 
 @OptIn(ExperimentalMultiplatform::class)
 @OptionalExpectation
-expect annotation class CommonParcelize
+@Suppress("EMPTY_PRIMARY_CONSTRUCTOR")
+expect annotation class CommonParcelize()

@@ -27,4 +27,7 @@
     <!-- Quiz Details Screen -->
     <string name="quiz_details_start_quiz_cta">Start quiz!</string>
 
+    <!-- Quiz Screen -->
+    <string name="quiz_screen_question_x_of_y">Question %d of %d</string>
+
 </resources>

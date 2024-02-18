@@ -1,7 +1,6 @@
 package com.geotrainer.shared.feature.allquizzes
 
 import com.geotrainer.shared.model.quiz.Quiz
-import com.geotrainer.shared.service.KtorRunner
 import com.geotrainer.shared.type.ApiResult
 import com.geotrainer.shared.type.success
 import com.geotrainer.shared.type.tapSuccess
@@ -12,7 +11,7 @@ internal interface AllQuizzesRepository {
 }
 
 internal class AllQuizzesRepositoryImpl(
-    private val ktorRunner: KtorRunner,
+    private val allQuizzesApi: AllQuizzesApi,
 ) : AllQuizzesRepository {
     private var quizCache: List<Quiz>? = null
 
@@ -23,7 +22,5 @@ internal class AllQuizzesRepositoryImpl(
      * scenario, they re-open the app  to reload
      */
     override suspend fun getAllQuizzes() =
-        quizCache?.success() ?: ktorRunner<List<Quiz>> {
-            get(AllQuizzesEndpoints.AllQuizzes())
-        }.tapSuccess { quizCache = it }
+        quizCache?.success() ?: allQuizzesApi.getAllQuizzes().tapSuccess { quizCache = it }
 }

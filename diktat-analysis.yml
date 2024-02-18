@@ -220,7 +220,7 @@
   configuration:
     # Whether a newline after `{` is required in an empty block
     styleEmptyBlockWithNewline: 'True'
-    allowEmptyBlocks: 'False'
+    allowEmptyBlocks: 'True'
 # Checks that there is no more than one statement per line
 - name: MORE_THAN_ONE_STATEMENT_PER_LINE
   enabled: true

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+
 import com.geotrainer.android.ui.components.AnimatedProgressIndicator
 import com.geotrainer.android.ui.components.NavigationBarIconsColor
 import com.geotrainer.android.ui.components.Screen
@@ -20,13 +21,19 @@ import com.geotrainer.android.ui.components.navigation.CloseButton
 import com.geotrainer.android.ui.components.navigation.GeoTrainerTopAppBar
 import com.geotrainer.android.ui.components.navigation.GeoTrainerTopAppBarStyle
 import com.geotrainer.android.ui.components.preview.PreviewSurface
+import com.geotrainer.android.utils.resource
+import com.geotrainer.shared.model.quiz.Quiz
+
+import GeoTrainer.shared.MR
 import com.ramcosta.composedestinations.annotation.Destination
 
 private const val previewGroup = "Quiz"
 
 @Destination
 @Composable
-fun QuizScreen() {
+fun QuizScreen(
+    quiz: Quiz,
+) {
     Screen(
         systemBarIconsColor = SystemBarIconsColor(
             StatusBarIconsColor.Dark,
@@ -62,7 +69,7 @@ private fun QuizScaffold(
                 title = {
                     Text(
                         // TODO make this come from the state
-                        text = "Question 1 of 25",
+                        text = MR.strings.quiz_screen_question_x_of_y.resource().format(1, 25),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -77,4 +84,11 @@ private fun QuizScaffold(
     ) {
         /* TODO */
     }
+}
+
+@Composable
+private fun QuizContent(
+
+) {
+
 }

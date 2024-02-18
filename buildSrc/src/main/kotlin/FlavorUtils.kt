@@ -19,7 +19,8 @@ private val flavourIndependentTasks = listOf(
     "help",
     "signingReport",
     "dependencies",
-    "buildEnvironment"
+    "buildEnvironment",
+    "tasks",
 )
 
 private val buildTaskPrefixes = listOf(
