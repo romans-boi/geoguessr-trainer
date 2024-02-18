@@ -6,7 +6,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 
 import com.geotrainer.android.R
-import com.geotrainer.android.ui.components.StyledIconButton
+import com.geotrainer.android.ui.components.buttons.StyledIconButton
 import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.utils.resource
 

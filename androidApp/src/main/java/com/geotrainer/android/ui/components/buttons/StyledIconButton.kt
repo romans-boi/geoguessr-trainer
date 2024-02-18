@@ -1,4 +1,4 @@
-package com.geotrainer.android.ui.components
+package com.geotrainer.android.ui.components.buttons
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
+import com.geotrainer.android.ui.components.rememberMultipleEventsCutter
 
 /**
  * Wrapper around IconButton { Icon } composable so we don't have to call both every time, and
