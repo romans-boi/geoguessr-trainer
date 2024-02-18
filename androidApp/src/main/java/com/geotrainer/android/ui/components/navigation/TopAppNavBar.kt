@@ -29,6 +29,32 @@ private const val previewGroup = "Navigation Top App Bars"
 @Suppress("MAGIC_NUMBER")
 val material3HeaderHeight: Dp = 64.dp
 
+enum class GeoTrainerTopAppBarStyle {
+    Dark,
+    Light,
+    ;
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun colors() = when (this) {
+        Light -> TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = GeoTrainerTheme.colors.LightBlue,
+            scrolledContainerColor = Color.Transparent,
+            navigationIconContentColor = GeoTrainerTheme.colors.DarkBlue,
+            titleContentColor = GeoTrainerTheme.colors.DarkBlue,
+            actionIconContentColor = GeoTrainerTheme.colors.DarkBlue
+        )
+
+        Dark -> TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = GeoTrainerTheme.colors.DarkBlue,
+            scrolledContainerColor = Color.Transparent,
+            navigationIconContentColor = GeoTrainerTheme.colors.LightBlue,
+            titleContentColor = GeoTrainerTheme.colors.LightBlue,
+            actionIconContentColor = GeoTrainerTheme.colors.LightBlue
+        )
+    }
+}
+
 /**
  * Header that has a title and buttons at the start or the end. The height is constrained so
  * using ellipsis overflow on the text composable is advised.
@@ -40,7 +66,7 @@ fun GeoTrainerTopAppBar(
     endContent: List<@Composable () -> Unit>,
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
-    contentColor: Color = GeoTrainerTheme.colors.LightBlue
+    style: GeoTrainerTopAppBarStyle = GeoTrainerTopAppBarStyle.Dark,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -61,13 +87,7 @@ fun GeoTrainerTopAppBar(
         modifier = modifier.fillMaxWidth(),
         navigationIcon = { startContent.forEach { button -> button() } },
         actions = { endContent.forEach { button -> button() } },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = GeoTrainerTheme.colors.DarkBlue,
-            scrolledContainerColor = Color.Transparent,
-            navigationIconContentColor = contentColor,
-            titleContentColor = contentColor,
-            actionIconContentColor = contentColor
-        ),
+        colors = style.colors(),
         windowInsets = WindowInsets(left = 0.dp, top = 0.dp, right = 0.dp, bottom = 0.dp),
     )
 }
@@ -76,18 +96,22 @@ fun GeoTrainerTopAppBar(
 fun TopAppBarWithClose(
     onClose: () -> Unit,
     enabled: Boolean = true,
+    style: GeoTrainerTopAppBarStyle = GeoTrainerTopAppBarStyle.Dark,
 ) = GeoTrainerTopAppBar(
     startContent = listOf(),
     endContent = listOf @Composable { CloseButton(onClose = onClose, enabled = enabled) },
+    style = style
 )
 
 @Composable
 fun TopAppBarWithBack(
     onBack: () -> Unit,
     enabled: Boolean = true,
+    style: GeoTrainerTopAppBarStyle = GeoTrainerTopAppBarStyle.Dark,
 ) = GeoTrainerTopAppBar(
     startContent = listOf @Composable { BackButton(onBack = onBack, enabled = enabled) },
     endContent = listOf(),
+    style = style
 )
 
 @Composable
