@@ -228,7 +228,7 @@ private fun AllQuizzesScreenContent(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Text(
-                    text = "Quizzes",
+                    text = MR.strings.all_quizzes_screen_title.resource(),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = GeoTrainerTheme.colors.LightBlue
@@ -297,7 +297,9 @@ private fun QuizCard(
                     )
             )
 
-            Column(modifier = Modifier.weight(1f).padding(16.dp)) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .padding(16.dp)) {
                 Text(
                     text = quiz.title,
                     style = MaterialTheme.typography.bodyLarge,

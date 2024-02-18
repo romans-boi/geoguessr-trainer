@@ -22,5 +22,9 @@
 
     <!-- All Quizzes Screen -->
     <string name="all_quizzes_screen_all_tab">All</string>
+    <string name="all_quizzes_screen_title">Quizzes</string>
+
+    <!-- Quiz Details Screen -->
+    <string name="quiz_details_start_quiz_cta">Start quiz!</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.geotrainer.android.ui.screens.quizzes.quizdetails
 
+import GeoTrainer.shared.MR
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import com.geotrainer.android.ui.components.navigation.navgraphs.QuizzesNavGraph
 import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.utils.colorIndicator
 import com.geotrainer.android.utils.localizedString
+import com.geotrainer.android.utils.resource
 import com.geotrainer.shared.model.Continent
 import com.geotrainer.shared.model.quiz.Quiz
 import com.ramcosta.composedestinations.annotation.Destination
@@ -113,9 +115,11 @@ private fun QuizDetailsContent(
             }
             Spacer(modifier = Modifier.height(12.dp))
             PrimaryButton(
-                text = "Start quiz!",
+                text = MR.strings.quiz_details_start_quiz_cta.resource(),
                 onClick = onStartQuiz,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalPadding)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
