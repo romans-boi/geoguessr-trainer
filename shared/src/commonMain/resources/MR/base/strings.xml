@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
 
+    <!-- Common -->
+    <string name="button_back_content_description">Back</string>
+    <string name="button_close_content_description">Close</string>
+
     <!-- Bottom Nav -->
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_quizzes">Quizzes</string>
@@ -18,5 +22,9 @@
 
     <!-- All Quizzes Screen -->
     <string name="all_quizzes_screen_all_tab">All</string>
+    <string name="all_quizzes_screen_title">Quizzes</string>
+
+    <!-- Quiz Details Screen -->
+    <string name="quiz_details_start_quiz_cta">Start quiz!</string>
 
 </resources>
