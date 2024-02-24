@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
 
     alias(libs.plugins.ksp)
+    alias(libs.plugins.easyLauncher)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.kotlinx.parcelize)
 }
@@ -58,7 +59,10 @@ android {
             isMinifyEnabled = true
             isShrinkResources = isMinifyEnabled
 
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -69,14 +73,17 @@ android {
         create(AppProductFlavor.Dev.raw) {
             isDefault = true
             dimension = Dimension.Environment.raw
+            resValue("string", "app_name", AppProductFlavor.Dev.appName)
         }
 
         create(AppProductFlavor.Uat.raw) {
             dimension = Dimension.Environment.raw
+            resValue("string", "app_name", AppProductFlavor.Uat.raw)
         }
 
         create(AppProductFlavor.Prod.raw) {
             dimension = Dimension.Environment.raw
+            resValue("string", "app_name", AppProductFlavor.Prod.appName)
         }
     }
 
