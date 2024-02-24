@@ -25,9 +25,10 @@ enum class AppBuildType(val raw: String) {
 }
 
 object AppNames {
-    const val DEV = "Your App Name Dev"
-    const val UAT = "Your App Name UAT"
-    const val PROD = "Your App Name Prod"
+    private const val CORE_NAME = "GeoTrainer"
+    const val DEV = "$CORE_NAME Dev"
+    const val UAT = "$CORE_NAME UAT"
+    const val PROD = CORE_NAME
 }
 
 enum class AppProductFlavor(val raw: String, val appName: String) {

@@ -1,3 +1,7 @@
+import com.project.starter.easylauncher.filter.ChromeLikeFilter
+import com.project.starter.easylauncher.filter.ColorRibbonFilter
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -35,8 +39,13 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        getByName(AppBuildType.Debug.raw) {
             isMinifyEnabled = false
+            isShrinkResources = false
+            enableUnitTestCoverage = true
+        }
+        getByName(AppBuildType.Release.raw) {
+            isMinifyEnabled = true
         }
     }
 
@@ -89,6 +98,38 @@ android {
 
     kotlin {
         jvmToolchain(ProjectJavaVersion.integer)
+    }
+}
+
+easylauncher {
+    val environments = android.productFlavors
+        .filter { it.dimension == Dimension.Environment.raw }
+        .map { it.name }
+    val buildTypes = android.buildTypes.names
+        .map { it.uppercaseFirstChar() }
+    val version = with(android.defaultConfig) { "${versionName}.${versionCode}" }
+    environments.forEach { env ->
+        buildTypes.forEach { buildType ->
+            val variantName = "$env$buildType"
+            variants.register(variantName) {
+                setFilters(
+                    listOfNotNull(
+                        chromeLike(
+                            label = version,
+                            ribbonColor = "#BB154734",
+                            labelColor = "#FFC6E6EE",
+                            gravity = ChromeLikeFilter.Gravity.TOP
+                        ),
+                        chromeLike(
+                            label = env.uppercase(),
+                            ribbonColor = "#BB154734",
+                            labelColor = "#FFC6E6EE",
+                            gravity = ChromeLikeFilter.Gravity.BOTTOM
+                        )
+                    )
+                )
+            }
+        }
     }
 }
 
