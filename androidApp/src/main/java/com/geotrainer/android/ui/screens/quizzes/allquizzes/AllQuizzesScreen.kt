@@ -1,5 +1,6 @@
 package com.geotrainer.android.ui.screens.quizzes.allquizzes
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,9 +33,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -70,8 +72,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
+import kotlinx.coroutines.launch
+
 private const val previewGroup = "All Quizzes Screen"
 
+@OptIn(ExperimentalFoundationApi::class)
 @QuizzesNavGraph(start = true)
 @Destination(style = FadeTransitions::class)
 @Composable
@@ -82,7 +87,9 @@ fun AllQuizzesScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     // Keep track of open tab
-    var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
+    val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
+    val pagerState = rememberPagerState(pageCount = { tabs?.size ?: 0 })
+    val pagerScope = rememberCoroutineScope()  // Needed for programmatic page changes
 
     Screen(
         onScreenView = viewModel::getAllQuizTabs,
@@ -93,48 +100,50 @@ fun AllQuizzesScreen(
     ) {
         AllQuizzesScreenSurface(
             state = state,
-            selectedTabIndex = selectedTabIndex,
+            pagerState = pagerState,
             onSelectTab = { tabIndex ->
-                selectedTabIndex = tabIndex
+                pagerScope.launch {
+                    pagerState.animateScrollToPage(tabIndex)
+                }
             },
             onOpenQuiz = { navigator.navigate(QuizDetailsScreenDestination(it)) }
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview(name = "Main Content", group = previewGroup)
 fun AllQuizzesScreenPreview() = PreviewSurface {
-    AllQuizzesScreenSurface(
-        state = AllQuizzesViewModel.State.Data(
-            tabs = listOf(
-                ContinentTab(
-                    tabType = ContinentTabType.All, items = listOf(
-                        Quiz(
-                            quizId = "1",
-                            title = "First Quiz",
-                            description = "",
-                            continent = null
-                        ),
-                        Quiz(
-                            quizId = "2",
-                            title = "Quiz 2",
-                            description = "",
-                            continent = Continent.Africa
-                        ),
-                        Quiz(
-                            quizId = "3",
-                            title = "3rd quiz with quite a long name if you ask me",
-                            description = "",
-                            continent = Continent.Asia
-                        )
-                    )
+    val tabs = listOf(
+        ContinentTab(
+            tabType = ContinentTabType.All, items = listOf(
+                Quiz(
+                    quizId = "1",
+                    title = "First Quiz",
+                    description = "",
+                    continent = null
                 ),
-
-                ContinentTab(ContinentTabType.Continental(continent = Continent.Asia), listOf())
+                Quiz(
+                    quizId = "2",
+                    title = "Quiz 2",
+                    description = "",
+                    continent = Continent.Africa
+                ),
+                Quiz(
+                    quizId = "3",
+                    title = "3rd quiz with quite a long name if you ask me",
+                    description = "",
+                    continent = Continent.Asia
+                )
             )
         ),
-        selectedTabIndex = 0,
+
+        ContinentTab(ContinentTabType.Continental(continent = Continent.Asia), listOf())
+    )
+    AllQuizzesScreenSurface(
+        state = AllQuizzesViewModel.State.Data(tabs = tabs),
+        pagerState = rememberPagerState(pageCount = { tabs.size }),
         onSelectTab = {},
         onOpenQuiz = {}
     )
@@ -161,41 +170,44 @@ fun QuizCardPreview() = PreviewSurface {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 @Suppress("MAGIC_NUMBER")
 private fun AllQuizzesDataContent(
-    selectedTabIndex: Int,
+    pagerState: PagerState,
     tabs: List<ContinentTab>,
     onOpenQuiz: (quiz: Quiz) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
-    val selectedTabQuizzes = tabs[selectedTabIndex].items
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) {
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        items(selectedTabQuizzes) { quiz ->
-            QuizCard(
-                quiz = quiz,
-                onClick = { onOpenQuiz(quiz) }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
+    HorizontalPager(state = pagerState) { page ->
+        val selectedTabQuizzes = tabs[page].items
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            items(selectedTabQuizzes) { quiz ->
+                QuizCard(
+                    quiz = quiz,
+                    onClick = { onOpenQuiz(quiz) }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AllQuizzesScreenSurface(
     state: AllQuizzesViewModel.State,
-    selectedTabIndex: Int,
+    pagerState: PagerState,
     onSelectTab: (Int) -> Unit,
     onOpenQuiz: (quiz: Quiz) -> Unit
 ) {
@@ -223,7 +235,7 @@ private fun AllQuizzesScreenSurface(
 
             AllQuizzesScreenContent(
                 state = state,
-                selectedTabIndex = selectedTabIndex,
+                pagerState = pagerState,
                 onSelectTab = onSelectTab,
                 onOpenQuiz = onOpenQuiz
             )
@@ -257,12 +269,12 @@ private fun AllQuizzesScreenScaffold(
     content = content
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Suppress("TYPE_ALIAS")
 @Composable
 private fun AllQuizzesScreenContent(
     state: AllQuizzesViewModel.State,
-    selectedTabIndex: Int,
+    pagerState: PagerState,
     onSelectTab: (Int) -> Unit,
     onOpenQuiz: (quiz: Quiz) -> Unit
 ) {
@@ -282,10 +294,9 @@ private fun AllQuizzesScreenContent(
                 .fillMaxSize(),
         ) {
             val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
-
             tabs?.let { tabsNotNull ->
                 GeoTrainerScrollableTabRow(
-                    selectedTabIndex = selectedTabIndex,
+                    selectedTabIndex = pagerState.currentPage,
                     onSelect = onSelectTab,
                     tabs = tabsNotNull.map { tab ->
                         val name = when (val tabType = tab.tabType) {
@@ -299,7 +310,7 @@ private fun AllQuizzesScreenContent(
             }
             when (state) {
                 is AllQuizzesViewModel.State.Data -> AllQuizzesDataContent(
-                    selectedTabIndex = selectedTabIndex,
+                    pagerState = pagerState,
                     tabs = state.tabs,
                     onOpenQuiz = onOpenQuiz,
                     scrollBehavior = scrollBehavior,

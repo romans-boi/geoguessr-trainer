@@ -42,10 +42,10 @@ fun Modifier.clickableSingle(
     )
 }
 
-
 /**
  * Returns a new [PaddingValues] with the given padding values applied.
  * If a value is not provided, the original value is used.
+ *
  * @param layoutDirection Needed to calculate the start and end padding.
  * Should likely pass in LocalLayoutDirection.current
  */
