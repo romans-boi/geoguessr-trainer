@@ -1,6 +1,5 @@
 package com.geotrainer.android.ui.screens.quizzes.quizdetails
 
-import GeoTrainer.shared.MR
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+
 import com.geotrainer.android.ui.components.GeoTrainerCard
 import com.geotrainer.android.ui.components.NavigationBarIconsColor
 import com.geotrainer.android.ui.components.Screen
@@ -31,6 +31,8 @@ import com.geotrainer.android.utils.localizedString
 import com.geotrainer.android.utils.resource
 import com.geotrainer.shared.model.Continent
 import com.geotrainer.shared.model.quiz.Quiz
+
+import GeoTrainer.shared.MR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
