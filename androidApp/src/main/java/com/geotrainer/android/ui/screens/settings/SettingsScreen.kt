@@ -1,7 +1,6 @@
 package com.geotrainer.android.ui.screens.settings
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -40,6 +39,7 @@ import com.geotrainer.android.ui.components.navigation.FadeTransitions
 import com.geotrainer.android.ui.components.navigation.navgraphs.SettingsNavGraph
 import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.ui.theme.GeoTrainerTheme
+import com.geotrainer.android.utils.clickableSingle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -68,6 +68,21 @@ fun SettingsScreen(
             onAbout = { /* TODO */ },
         )
     }
+}
+
+@Preview(name = "Main Content", group = previewGroup)
+@Composable
+fun SettingsScreenContentPreview() = PreviewSurface {
+    SettingsContent(
+        onQuizSettings = {},
+        onQuizStatistics = {},
+        onContact = {},
+        onReportIssue = {},
+        onPrivacyPolicy = {},
+        onLicensingInformation = {},
+        onSources = {},
+        onAbout = {},
+    )
 }
 
 @Composable
@@ -111,7 +126,7 @@ private fun SettingsItem(
 ) = Row(
     modifier = Modifier
         .fillMaxWidth()
-        .clickable(onClick = onClick)
+        .clickableSingle(onClick = onClick)
         .sizeIn(minHeight = 48.dp)
         .padding(horizontal = 8.dp),
     verticalAlignment = Alignment.CenterVertically,
@@ -208,19 +223,4 @@ private fun AboutSection(onAbout: () -> Unit) = Column {
     SettingsSectionContainer {
         SettingsItem(text = "About authors", onAbout)
     }
-}
-
-@Preview(name = "Main Content", group = previewGroup)
-@Composable
-fun SettingsScreenContentPreview() = PreviewSurface {
-    SettingsContent(
-        onQuizSettings = {},
-        onQuizStatistics = {},
-        onContact = {},
-        onReportIssue = {},
-        onPrivacyPolicy = {},
-        onLicensingInformation = {},
-        onSources = {},
-        onAbout = {},
-    )
 }
