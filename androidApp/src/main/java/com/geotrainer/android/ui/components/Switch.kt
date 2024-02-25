@@ -7,8 +7,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -20,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.geotrainer.android.R
 import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.ui.theme.GeoTrainerTheme
 
@@ -35,7 +35,7 @@ fun PrimarySwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) = Switch
     colors = SwitchDefaults.colors(
         checkedThumbColor = GeoTrainerTheme.colors.White,
         checkedTrackColor = GeoTrainerTheme.colors.DarkBlue,
-        uncheckedThumbColor = GeoTrainerTheme.colors.LightBlue,
+        uncheckedThumbColor = GeoTrainerTheme.colors.DarkBlue,
         uncheckedTrackColor = GeoTrainerTheme.colors.White,
         uncheckedBorderColor = MaterialTheme.colorScheme.onSurface,
         checkedBorderColor = GeoTrainerTheme.colors.DarkBlue,
@@ -47,7 +47,7 @@ fun PrimarySwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) = Switch
             exit = fadeOut(animationSpec = tween(EXIT_ANIM_DURATION_MILLIS))
         ) {
             Icon(
-                imageVector = Icons.Filled.Check,
+                painter = painterResource(id = R.drawable.ic_check),
                 contentDescription = null,
                 modifier = Modifier
                     .size(24.dp)

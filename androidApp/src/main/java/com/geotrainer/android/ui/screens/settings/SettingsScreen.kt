@@ -71,7 +71,7 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsContent(
+private fun SettingsContent(
     onQuizSettings: () -> Unit,
     onQuizStatistics: () -> Unit,
     onContact: () -> Unit,
@@ -95,16 +95,16 @@ fun SettingsContent(
 }
 
 @Composable
-fun SettingsSectionContainer(content: @Composable ColumnScope.() -> Unit) = Column(
+private fun SettingsSectionContainer(content: @Composable ColumnScope.() -> Unit) = Column(
     modifier = Modifier
         .padding(top = 8.dp, bottom = 16.dp)
         .clip(RoundedCornerShape(8.dp))
-        .background(GeoTrainerTheme.colors.White, shape = RoundedCornerShape(8.dp)),
+        .background(GeoTrainerTheme.colors.White),
     content = content
 )
 
 @Composable
-fun SettingsItem(
+private fun SettingsItem(
     text: String,
     onClick: () -> Unit,
     trailing: @Composable (() -> Unit)? = null,
@@ -135,7 +135,7 @@ fun SettingsItem(
 }
 
 @Composable
-fun QuizSection(
+private fun QuizSection(
     onQuizSettings: () -> Unit,
     onQuizStatistics: () -> Unit,
 ) = Column {
@@ -151,7 +151,7 @@ fun QuizSection(
 }
 
 @Composable
-fun CommunicationSection(
+private fun CommunicationSection(
     onContact: () -> Unit,
     onReportIssue: () -> Unit,
 ) = Column {
@@ -181,7 +181,7 @@ fun CommunicationSection(
 }
 
 @Composable
-fun LegalSection(
+private fun LegalSection(
     onPrivacyPolicy: () -> Unit,
     onLicensingInformation: () -> Unit,
     onSources: () -> Unit,
@@ -200,7 +200,7 @@ fun LegalSection(
 }
 
 @Composable
-fun AboutSection(onAbout: () -> Unit) = Column {
+private fun AboutSection(onAbout: () -> Unit) = Column {
     Text(
         text = "About",
         style = MaterialTheme.typography.headlineSmall,
