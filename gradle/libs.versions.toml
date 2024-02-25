@@ -28,6 +28,7 @@ lifecycle = "2.7.0" # https://developer.android.com/jetpack/androidx/releases/li
 
 # Build
 buildKonfig = "0.15.1" # https://github.com/yshrsmz/BuildKonfig
+easyLauncher = "6.2.0" # https://github.com/usefulness/easylauncher-gradle-plugin
 
 # DI
 # https://insert-koin.io/docs/setup/koin
@@ -148,3 +149,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
 moko-swift = { id = "dev.icerock.moko.kswift", version.ref = "moko-swift" }
+easyLauncher = { id = "com.starter.easylauncher", version.ref = "easyLauncher" }

@@ -1,8 +1,13 @@
+import com.project.starter.easylauncher.filter.ChromeLikeFilter
+import com.project.starter.easylauncher.filter.ColorRibbonFilter
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 
     alias(libs.plugins.ksp)
+    alias(libs.plugins.easyLauncher)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.kotlinx.parcelize)
 }
@@ -33,12 +38,6 @@ android {
         }
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-
     compileOptions {
         sourceCompatibility = ProjectJavaVersion.gradle
         targetCompatibility = ProjectJavaVersion.gradle
@@ -58,7 +57,10 @@ android {
             isMinifyEnabled = true
             isShrinkResources = isMinifyEnabled
 
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -69,19 +71,54 @@ android {
         create(AppProductFlavor.Dev.raw) {
             isDefault = true
             dimension = Dimension.Environment.raw
+            resValue("string", "app_name", AppProductFlavor.Dev.appName)
         }
 
         create(AppProductFlavor.Uat.raw) {
             dimension = Dimension.Environment.raw
+            resValue("string", "app_name", AppProductFlavor.Uat.raw)
         }
 
         create(AppProductFlavor.Prod.raw) {
             dimension = Dimension.Environment.raw
+            resValue("string", "app_name", AppProductFlavor.Prod.appName)
         }
     }
 
     kotlin {
         jvmToolchain(ProjectJavaVersion.integer)
+    }
+}
+
+easylauncher {
+    val environments = android.productFlavors
+        .filter { it.dimension == Dimension.Environment.raw }
+        .map { it.name }
+    val buildTypes = android.buildTypes.names
+        .map { it.uppercaseFirstChar() }
+    val version = with(android.defaultConfig) { "${versionName}.${versionCode}" }
+    environments.forEach { env ->
+        buildTypes.forEach { buildType ->
+            val variantName = "$env$buildType"
+            variants.register(variantName) {
+                setFilters(
+                    listOfNotNull(
+                        chromeLike(
+                            label = version,
+                            ribbonColor = "#BB154734",
+                            labelColor = "#FFC6E6EE",
+                            gravity = ChromeLikeFilter.Gravity.TOP
+                        ),
+                        chromeLike(
+                            label = env.uppercase(),
+                            ribbonColor = "#BB154734",
+                            labelColor = "#FFC6E6EE",
+                            gravity = ChromeLikeFilter.Gravity.BOTTOM
+                        )
+                    )
+                )
+            }
+        }
     }
 }
 
