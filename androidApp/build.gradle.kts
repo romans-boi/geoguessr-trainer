@@ -38,17 +38,6 @@ android {
         }
     }
 
-    buildTypes {
-        getByName(AppBuildType.Debug.raw) {
-            isMinifyEnabled = false
-            isShrinkResources = false
-            enableUnitTestCoverage = true
-        }
-        getByName(AppBuildType.Release.raw) {
-            isMinifyEnabled = true
-        }
-    }
-
     compileOptions {
         sourceCompatibility = ProjectJavaVersion.gradle
         targetCompatibility = ProjectJavaVersion.gradle
