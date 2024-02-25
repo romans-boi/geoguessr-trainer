@@ -24,10 +24,17 @@ enum class AppBuildType(val raw: String) {
     ;
 }
 
-enum class AppProductFlavor(val raw: String) {
-    Dev("dev"),
-    Prod("prod"),
-    Uat("uat"),
+object AppNames {
+    private const val CORE_NAME = "GeoTrainer"
+    const val DEV = "$CORE_NAME Dev"
+    const val UAT = "$CORE_NAME UAT"
+    const val PROD = CORE_NAME
+}
+
+enum class AppProductFlavor(val raw: String, val appName: String) {
+    Dev("dev", AppNames.DEV),
+    Prod("prod", AppNames.PROD),
+    Uat("uat", AppNames.UAT),
     ;
 }
 
