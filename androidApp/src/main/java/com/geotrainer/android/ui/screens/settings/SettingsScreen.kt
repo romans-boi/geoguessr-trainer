@@ -1,7 +1,6 @@
 package com.geotrainer.android.ui.screens.settings
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+
 import com.geotrainer.android.R
 import com.geotrainer.android.ui.components.NavigationBarIconsColor
 import com.geotrainer.android.ui.components.PrimarySwitch
@@ -40,6 +40,9 @@ import com.geotrainer.android.ui.components.navigation.navgraphs.SettingsNavGrap
 import com.geotrainer.android.ui.components.preview.PreviewSurface
 import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.geotrainer.android.utils.clickableSingle
+import com.geotrainer.android.utils.resource
+
+import GeoTrainer.shared.MR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -97,7 +100,7 @@ private fun SettingsContent(
     onAbout: () -> Unit,
 ) = ScreenSlotBasicScrollable(contentModifier = Modifier.padding(16.dp)) {
     Text(
-        text = "Settings",
+        text = MR.strings.settings_screen_title.resource(),
         style = MaterialTheme.typography.headlineLarge,
         fontWeight = FontWeight.Bold
     )
@@ -130,11 +133,11 @@ private fun SettingsItem(
         .sizeIn(minHeight = 48.dp)
         .padding(horizontal = 8.dp),
     verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.SpaceBetween
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier.weight(1f)
     )
     when {
         trailing != null -> trailing()
@@ -155,13 +158,13 @@ private fun QuizSection(
     onQuizStatistics: () -> Unit,
 ) = Column {
     Text(
-        text = "Quiz",
+        text = MR.strings.settings_screen_quiz.resource(),
         style = MaterialTheme.typography.headlineSmall,
     )
     SettingsSectionContainer {
-        SettingsItem(text = "Quiz settings", onQuizSettings)
+        SettingsItem(text = MR.strings.settings_screen_quiz_settings.resource(), onQuizSettings)
         HorizontalDivider()
-        SettingsItem(text = "Statistics", onQuizStatistics)
+        SettingsItem(text = MR.strings.settings_screen_stats.resource(), onQuizStatistics)
     }
 }
 
@@ -172,12 +175,12 @@ private fun CommunicationSection(
 ) = Column {
     var isPushNotificationToggled by remember { mutableStateOf(false) }
     Text(
-        text = "Communication",
+        text = MR.strings.settings_screen_communication.resource(),
         style = MaterialTheme.typography.headlineSmall,
     )
     SettingsSectionContainer {
         SettingsItem(
-            text = "Push notifications",
+            text = MR.strings.settings_screen_notifications.resource(),
             onClick = {
                 isPushNotificationToggled = !isPushNotificationToggled
             },
@@ -189,9 +192,9 @@ private fun CommunicationSection(
             }
         )
         HorizontalDivider()
-        SettingsItem(text = "Contact", onContact)
+        SettingsItem(text = MR.strings.settings_screen_contact.resource(), onContact)
         HorizontalDivider()
-        SettingsItem(text = "Report an issue", onReportIssue)
+        SettingsItem(text = MR.strings.settings_screen_report.resource(), onReportIssue)
     }
 }
 
@@ -202,25 +205,25 @@ private fun LegalSection(
     onSources: () -> Unit,
 ) = Column {
     Text(
-        text = "Legal",
+        text = MR.strings.settings_screen_legal.resource(),
         style = MaterialTheme.typography.headlineSmall,
     )
     SettingsSectionContainer {
-        SettingsItem(text = "Privacy policy", onPrivacyPolicy)
+        SettingsItem(text = MR.strings.settings_screen_privacy.resource(), onPrivacyPolicy)
         HorizontalDivider()
-        SettingsItem(text = "Licensing information", onLicensingInformation)
+        SettingsItem(text = MR.strings.settings_screen_licensing.resource(), onLicensingInformation)
         HorizontalDivider()
-        SettingsItem(text = "Sources", onSources)
+        SettingsItem(text = MR.strings.settings_screen_sources.resource(), onSources)
     }
 }
 
 @Composable
 private fun AboutSection(onAbout: () -> Unit) = Column {
     Text(
-        text = "About",
+        text = MR.strings.settings_screen_about.resource(),
         style = MaterialTheme.typography.headlineSmall,
     )
     SettingsSectionContainer {
-        SettingsItem(text = "About authors", onAbout)
+        SettingsItem(text = MR.strings.settings_screen_authors.resource(), onAbout)
     }
 }
