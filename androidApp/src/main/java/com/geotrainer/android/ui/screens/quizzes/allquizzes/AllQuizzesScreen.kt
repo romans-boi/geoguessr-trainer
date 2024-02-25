@@ -3,6 +3,7 @@ package com.geotrainer.android.ui.screens.quizzes.allquizzes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,6 +58,7 @@ import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.geotrainer.android.utils.colorIndicator
 import com.geotrainer.android.utils.localizedString
 import com.geotrainer.android.utils.resource
+import com.geotrainer.android.utils.withValues
 import com.geotrainer.shared.model.Continent
 import com.geotrainer.shared.model.quiz.Quiz
 import com.geotrainer.shared.viewmodel.screens.allquizzes.AllQuizzesViewModel
@@ -173,12 +176,18 @@ private fun AllQuizzesDataContent(
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         items(selectedTabQuizzes) { quiz ->
             QuizCard(
                 quiz = quiz,
                 onClick = { onOpenQuiz(quiz) }
             )
             Spacer(modifier = Modifier.height(8.dp))
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -223,6 +232,32 @@ private fun AllQuizzesScreenSurface(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AllQuizzesScreenScaffold(
+    scrollBehavior: TopAppBarScrollBehavior,
+    content: @Composable (PaddingValues) -> Unit,
+) = Scaffold(
+    topBar = {
+        TopAppBar(
+            scrollBehavior = scrollBehavior,
+            title = {
+                Text(
+                    text = MR.strings.all_quizzes_screen_title.resource(),
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = GeoTrainerTheme.colors.LightBlue
+                )
+            },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                scrolledContainerColor = GeoTrainerTheme.colors.DarkBlue,
+                containerColor = GeoTrainerTheme.colors.DarkBlue,
+            ),
+        )
+    },
+    content = content
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("TYPE_ALIAS")
 @Composable
 private fun AllQuizzesScreenContent(
@@ -235,28 +270,15 @@ private fun AllQuizzesScreenContent(
         rememberTopAppBarState()
     )
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                scrollBehavior = scrollBehavior,
-                title = {
-                    Text(
-                        text = MR.strings.all_quizzes_screen_title.resource(),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = GeoTrainerTheme.colors.LightBlue
-                    )
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    scrolledContainerColor = GeoTrainerTheme.colors.DarkBlue,
-                    containerColor = GeoTrainerTheme.colors.DarkBlue,
-                ),
-            )
-        }
-    ) { innerPadding ->
+    AllQuizzesScreenScaffold(scrollBehavior = scrollBehavior) { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(
+                    innerPadding.withValues(
+                        bottom = 0.dp,
+                        layoutDirection = LocalLayoutDirection.current
+                    )
+                )
                 .fillMaxSize(),
         ) {
             val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
@@ -276,18 +298,12 @@ private fun AllQuizzesScreenContent(
                 )
             }
             when (state) {
-                is AllQuizzesViewModel.State.Data -> {
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    AllQuizzesDataContent(
-                        selectedTabIndex = selectedTabIndex,
-                        tabs = state.tabs,
-                        onOpenQuiz = onOpenQuiz,
-                        scrollBehavior = scrollBehavior,
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+                is AllQuizzesViewModel.State.Data -> AllQuizzesDataContent(
+                    selectedTabIndex = selectedTabIndex,
+                    tabs = state.tabs,
+                    onOpenQuiz = onOpenQuiz,
+                    scrollBehavior = scrollBehavior,
+                )
 
                 AllQuizzesViewModel.State.Error -> Text("Error")
                 AllQuizzesViewModel.State.Loading -> Text("Loading")

@@ -3,10 +3,15 @@ package com.geotrainer.android.utils
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import com.geotrainer.android.ui.components.rememberMultipleEventsCutter
 
 /**
@@ -36,3 +41,23 @@ fun Modifier.clickableSingle(
         interactionSource = remember { MutableInteractionSource() }
     )
 }
+
+
+/**
+ * Returns a new [PaddingValues] with the given padding values applied.
+ * If a value is not provided, the original value is used.
+ * @param layoutDirection Needed to calculate the start and end padding.
+ * Should likely pass in LocalLayoutDirection.current
+ */
+fun PaddingValues.withValues(
+    start: Dp? = null,
+    end: Dp? = null,
+    top: Dp? = null,
+    bottom: Dp? = null,
+    layoutDirection: LayoutDirection
+): PaddingValues = PaddingValues(
+    start = start ?: this.calculateStartPadding(layoutDirection),
+    end = end ?: this.calculateEndPadding(layoutDirection),
+    top = top ?: this.calculateTopPadding(),
+    bottom = bottom ?: this.calculateBottomPadding()
+)
