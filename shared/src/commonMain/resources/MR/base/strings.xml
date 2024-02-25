@@ -27,4 +27,19 @@
     <!-- Quiz Details Screen -->
     <string name="quiz_details_start_quiz_cta">Start quiz!</string>
 
+    <!-- Settings Screen -->
+    <string name="settings_screen_title">Settings</string>
+    <string name="settings_screen_quiz">Quiz</string>
+    <string name="settings_screen_quiz_settings">Quiz settings</string>
+    <string name="settings_screen_stats">Statistics</string>
+    <string name="settings_screen_communication">Communication</string>
+    <string name="settings_screen_notifications">Push notifications</string>
+    <string name="settings_screen_contact">Contact</string>
+    <string name="settings_screen_report">Report an issue</string>
+    <string name="settings_screen_legal">Legal</string>
+    <string name="settings_screen_privacy">Privacy policy</string>
+    <string name="settings_screen_licensing">Licensing information</string>
+    <string name="settings_screen_sources">Sources</string>
+    <string name="settings_screen_about">About</string>
+    <string name="settings_screen_authors">About authors</string>
 </resources>
