@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,18 +17,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +60,7 @@ import com.geotrainer.android.ui.theme.GeoTrainerTheme
 import com.geotrainer.android.utils.colorIndicator
 import com.geotrainer.android.utils.localizedString
 import com.geotrainer.android.utils.resource
+import com.geotrainer.android.utils.withValues
 import com.geotrainer.shared.model.Continent
 import com.geotrainer.shared.model.quiz.Quiz
 import com.geotrainer.shared.viewmodel.screens.allquizzes.AllQuizzesViewModel
@@ -61,27 +72,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
+import kotlinx.coroutines.launch
+
 private const val previewGroup = "All Quizzes Screen"
 
-@Suppress("MAGIC_NUMBER")
-private fun LazyListScope.allQuizzesDataContent(
-    selectedTabIndex: Int,
-    tabs: List<ContinentTab>,
-    onOpenQuiz: (quiz: Quiz) -> Unit,
-) {
-    val selectedTabQuizzes = tabs[selectedTabIndex].items
-
-    selectedTabQuizzes.map { quiz ->
-        item(key = "${quiz.quizId}${quiz.continent}") {
-            QuizCard(
-                quiz = quiz,
-                onClick = { onOpenQuiz(quiz) }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-    }
-}
-
+@OptIn(ExperimentalFoundationApi::class)
 @QuizzesNavGraph(start = true)
 @Destination(style = FadeTransitions::class)
 @Composable
@@ -92,7 +87,9 @@ fun AllQuizzesScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     // Keep track of open tab
-    var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
+    val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
+    val pagerState = rememberPagerState(pageCount = { tabs?.size ?: 0 })
+    val pagerScope = rememberCoroutineScope()  // Needed for programmatic page changes
 
     Screen(
         onScreenView = viewModel::getAllQuizTabs,
@@ -103,48 +100,50 @@ fun AllQuizzesScreen(
     ) {
         AllQuizzesScreenSurface(
             state = state,
-            selectedTabIndex = selectedTabIndex,
+            pagerState = pagerState,
             onSelectTab = { tabIndex ->
-                selectedTabIndex = tabIndex
+                pagerScope.launch {
+                    pagerState.animateScrollToPage(tabIndex)
+                }
             },
             onOpenQuiz = { navigator.navigate(QuizDetailsScreenDestination(it)) }
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview(name = "Main Content", group = previewGroup)
 fun AllQuizzesScreenPreview() = PreviewSurface {
-    AllQuizzesScreenSurface(
-        state = AllQuizzesViewModel.State.Data(
-            tabs = listOf(
-                ContinentTab(
-                    tabType = ContinentTabType.All, items = listOf(
-                        Quiz(
-                            quizId = "1",
-                            title = "First Quiz",
-                            description = "",
-                            continent = null
-                        ),
-                        Quiz(
-                            quizId = "2",
-                            title = "Quiz 2",
-                            description = "",
-                            continent = Continent.Africa
-                        ),
-                        Quiz(
-                            quizId = "3",
-                            title = "3rd quiz with quite a long name if you ask me",
-                            description = "",
-                            continent = Continent.Asia
-                        )
-                    )
+    val tabs = listOf(
+        ContinentTab(
+            tabType = ContinentTabType.All, items = listOf(
+                Quiz(
+                    quizId = "1",
+                    title = "First Quiz",
+                    description = "",
+                    continent = null
                 ),
-
-                ContinentTab(ContinentTabType.Continental(continent = Continent.Asia), listOf())
+                Quiz(
+                    quizId = "2",
+                    title = "Quiz 2",
+                    description = "",
+                    continent = Continent.Africa
+                ),
+                Quiz(
+                    quizId = "3",
+                    title = "3rd quiz with quite a long name if you ask me",
+                    description = "",
+                    continent = Continent.Asia
+                )
             )
         ),
-        selectedTabIndex = 0,
+
+        ContinentTab(ContinentTabType.Continental(continent = Continent.Asia), listOf())
+    )
+    AllQuizzesScreenSurface(
+        state = AllQuizzesViewModel.State.Data(tabs = tabs),
+        pagerState = rememberPagerState(pageCount = { tabs.size }),
         onSelectTab = {},
         onOpenQuiz = {}
     )
@@ -171,10 +170,44 @@ fun QuizCardPreview() = PreviewSurface {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+@Suppress("MAGIC_NUMBER")
+private fun AllQuizzesDataContent(
+    pagerState: PagerState,
+    tabs: List<ContinentTab>,
+    onOpenQuiz: (quiz: Quiz) -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior,
+) {
+    HorizontalPager(state = pagerState) { page ->
+        val selectedTabQuizzes = tabs[page].items
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            items(selectedTabQuizzes) { quiz ->
+                QuizCard(
+                    quiz = quiz,
+                    onClick = { onOpenQuiz(quiz) }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AllQuizzesScreenSurface(
     state: AllQuizzesViewModel.State,
-    selectedTabIndex: Int,
+    pagerState: PagerState,
     onSelectTab: (Int) -> Unit,
     onOpenQuiz: (quiz: Quiz) -> Unit
 ) {
@@ -202,7 +235,7 @@ private fun AllQuizzesScreenSurface(
 
             AllQuizzesScreenContent(
                 state = state,
-                selectedTabIndex = selectedTabIndex,
+                pagerState = pagerState,
                 onSelectTab = onSelectTab,
                 onOpenQuiz = onOpenQuiz
             )
@@ -210,38 +243,60 @@ private fun AllQuizzesScreenSurface(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@Suppress("TYPE_ALIAS")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AllQuizzesScreenContent(
-    state: AllQuizzesViewModel.State,
-    selectedTabIndex: Int,
-    onSelectTab: (Int) -> Unit,
-    onOpenQuiz: (quiz: Quiz) -> Unit
-) {
-    LazyColumn {
-        item(key = "HeaderColumn") {
-            Column(
-                modifier = Modifier
-                    .background(color = GeoTrainerTheme.colors.DarkBlue)
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
+private fun AllQuizzesScreenScaffold(
+    scrollBehavior: TopAppBarScrollBehavior,
+    content: @Composable (PaddingValues) -> Unit,
+) = Scaffold(
+    topBar = {
+        TopAppBar(
+            scrollBehavior = scrollBehavior,
+            title = {
                 Text(
                     text = MR.strings.all_quizzes_screen_title.resource(),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = GeoTrainerTheme.colors.LightBlue
                 )
-            }
-        }
+            },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                scrolledContainerColor = GeoTrainerTheme.colors.DarkBlue,
+                containerColor = GeoTrainerTheme.colors.DarkBlue,
+            ),
+        )
+    },
+    content = content
+)
 
-        stickyHeader(key = "StickyHeaderTabRow") {
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Suppress("TYPE_ALIAS")
+@Composable
+private fun AllQuizzesScreenContent(
+    state: AllQuizzesViewModel.State,
+    pagerState: PagerState,
+    onSelectTab: (Int) -> Unit,
+    onOpenQuiz: (quiz: Quiz) -> Unit
+) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
+        rememberTopAppBarState()
+    )
+
+    AllQuizzesScreenScaffold(scrollBehavior = scrollBehavior) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(
+                    innerPadding.withValues(
+                        bottom = 0.dp,
+                        layoutDirection = LocalLayoutDirection.current
+                    )
+                )
+                .fillMaxSize(),
+        ) {
             val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
-
             tabs?.let { tabsNotNull ->
                 GeoTrainerScrollableTabRow(
-                    selectedTabIndex = selectedTabIndex,
+                    selectedTabIndex = pagerState.currentPage,
                     onSelect = onSelectTab,
                     tabs = tabsNotNull.map { tab ->
                         val name = when (val tabType = tab.tabType) {
@@ -253,23 +308,17 @@ private fun AllQuizzesScreenContent(
                     },
                 )
             }
-        }
-
-        when (state) {
-            is AllQuizzesViewModel.State.Data -> {
-                item { Spacer(modifier = Modifier.height(16.dp)) }
-
-                allQuizzesDataContent(
-                    selectedTabIndex = selectedTabIndex,
+            when (state) {
+                is AllQuizzesViewModel.State.Data -> AllQuizzesDataContent(
+                    pagerState = pagerState,
                     tabs = state.tabs,
                     onOpenQuiz = onOpenQuiz,
+                    scrollBehavior = scrollBehavior,
                 )
 
-                item { Spacer(modifier = Modifier.height(16.dp)) }
+                AllQuizzesViewModel.State.Error -> Text("Error")
+                AllQuizzesViewModel.State.Loading -> Text("Loading")
             }
-
-            AllQuizzesViewModel.State.Error -> item { Text("Error") }
-            AllQuizzesViewModel.State.Loading -> item { Text("Loading") }
         }
     }
 }
@@ -297,9 +346,11 @@ private fun QuizCard(
                     )
             )
 
-            Column(modifier = Modifier
-                .weight(1f)
-                .padding(16.dp)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            ) {
                 Text(
                     text = quiz.title,
                     style = MaterialTheme.typography.bodyLarge,
