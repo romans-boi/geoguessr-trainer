@@ -34,7 +34,7 @@ kotlin {
     }
 
     jvmToolchain(ProjectJavaVersion.integer)
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -61,6 +61,10 @@ kotlin {
             implementation(libs.ktor.serialization.kotlixjson)
             implementation(libs.ktor.logging)
             implementation(libs.ktor.auth)
+
+            /* DataStore */
+            implementation(libs.androidx.datastore.preferences.core)
+            implementation(libs.androidx.datastore.core.okio)
 
             /* Coroutines */
             implementation(libs.kotlinx.coroutines.core)
