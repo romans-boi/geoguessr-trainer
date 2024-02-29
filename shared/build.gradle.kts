@@ -63,8 +63,8 @@ kotlin {
             implementation(libs.ktor.auth)
 
             /* DataStore */
-            implementation(libs.androidx.datastore.preferences.core)
-            implementation(libs.androidx.datastore.core.okio)
+            api(libs.androidx.datastore.preferences.core)
+            api(libs.androidx.datastore.core.okio)
 
             /* Coroutines */
             implementation(libs.kotlinx.coroutines.core)
