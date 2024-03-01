@@ -127,6 +127,18 @@ java {
     }
 }
 
+ksp {
+    arg("mockative.stubsUnitByDefault", "true")
+}
+
+dependencies {
+    configurations
+        .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
+        .forEach {
+            add(it.name, libs.test.mockative.processor)
+        }
+}
+
 buildkonfig {
     packageName = "com.geotrainer.shared"
     exposeObjectWithName = "BuildKonfig"
