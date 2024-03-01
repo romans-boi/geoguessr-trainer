@@ -1,5 +1,6 @@
 package com.geotrainer.android.ui.screens.quizzes.allquizzes
 
+import GeoTrainer.shared.MR
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -43,7 +44,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-
 import com.geotrainer.android.R
 import com.geotrainer.android.ui.components.GeoTrainerCard
 import com.geotrainer.android.ui.components.GeoTrainerScrollableTabRow
@@ -66,13 +66,10 @@ import com.geotrainer.shared.model.quiz.Quiz
 import com.geotrainer.shared.viewmodel.screens.allquizzes.AllQuizzesViewModel
 import com.geotrainer.shared.viewmodel.screens.allquizzes.ContinentTab
 import com.geotrainer.shared.viewmodel.screens.allquizzes.ContinentTabType
-
-import GeoTrainer.shared.MR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import org.koin.androidx.compose.koinViewModel
-
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 private const val previewGroup = "All Quizzes Screen"
 
@@ -89,7 +86,7 @@ fun AllQuizzesScreen(
     // Keep track of open tab
     val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
     val pagerState = rememberPagerState(pageCount = { tabs?.size ?: 0 })
-    val pagerScope = rememberCoroutineScope()  // Needed for programmatic page changes
+    val coroutineScope = rememberCoroutineScope()
 
     Screen(
         onScreenView = viewModel::getAllQuizTabs,
@@ -102,7 +99,7 @@ fun AllQuizzesScreen(
             state = state,
             pagerState = pagerState,
             onSelectTab = { tabIndex ->
-                pagerScope.launch {
+                coroutineScope.launch {
                     pagerState.animateScrollToPage(tabIndex)
                 }
             },
