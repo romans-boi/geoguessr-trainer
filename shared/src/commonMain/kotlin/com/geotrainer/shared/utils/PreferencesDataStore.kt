@@ -4,9 +4,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+
+import okio.Path.Companion.toPath
+
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import okio.Path.Companion.toPath
 
 internal const val dataStoreFileName = "geotrainer.preferences_pb"
 
@@ -26,10 +28,8 @@ internal class PreferencesDataStoreImpl(
         }
     }
 
-    override fun <T> getPreference(prefKey: Preferences.Key<T>, defaultValue: T): Flow<T> {
-        return dataStore.data.map { prefs ->
-            prefs[prefKey] ?: defaultValue
-        }
+    override fun <T> getPreference(prefKey: Preferences.Key<T>, defaultValue: T): Flow<T> = dataStore.data.map { prefs ->
+        prefs[prefKey] ?: defaultValue
     }
 
     override suspend fun <T> remove(prefKey: Preferences.Key<T>) {
