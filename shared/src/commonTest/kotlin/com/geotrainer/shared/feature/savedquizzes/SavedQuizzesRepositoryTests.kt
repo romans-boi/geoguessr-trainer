@@ -1,5 +1,7 @@
 package com.geotrainer.shared.feature.savedquizzes
 
+import androidx.datastore.preferences.core.intPreferencesKey
+
 import com.geotrainer.shared.utils.BaseTest
 import com.geotrainer.shared.utils.PreferencesDataStore
 
@@ -19,19 +21,20 @@ import kotlinx.coroutines.flow.flowOf
 internal class SavedQuizzesRepositoryTests : BaseTest<SavedQuizzesRepository>() {
     @Mock
     private val dataStore = mock(classOf<PreferencesDataStore>())
+    private val testPreferenceKey = intPreferencesKey("test_key")
 
-    override fun createSut(testScope: CoroutineScope) = SavedQuizzesRepositoryImpl(dataStore)
+    override fun createSut(testScope: CoroutineScope) = SavedQuizzesRepositoryImpl(
+        dataStore = dataStore,
+        storedCountKey = testPreferenceKey
+    )
 
     @Test
     fun getStoredCountFlowReturnsCurrentStoredFlow() = runBlockingTest {
         // Given
-        // Stored count is 0, 1, 2
-        val expectedFlow = flowOf(0, 1, 2)
+        // Stored count is 2
+        val expectedFlow = flowOf(2)
         every {
-            dataStore.getPreference(
-                SavedQuizzesRepositoryImpl.storedCountKey,
-                0
-            )
+            dataStore.getPreference(testPreferenceKey, 0)
         }.returns(expectedFlow)
 
         // When
@@ -42,10 +45,7 @@ internal class SavedQuizzesRepositoryTests : BaseTest<SavedQuizzesRepository>() 
         // The flow is the expected flow
         assertEquals(expectedFlow, actualFlow)
         verify {
-            dataStore.getPreference(
-                SavedQuizzesRepositoryImpl.storedCountKey,
-                0
-            )
+            dataStore.getPreference(testPreferenceKey, 0)
         }.wasInvoked(1)
     }
 
@@ -57,12 +57,12 @@ internal class SavedQuizzesRepositoryTests : BaseTest<SavedQuizzesRepository>() 
         val storedCount = 0
         coEvery {
             dataStore.write(
-                SavedQuizzesRepositoryImpl.storedCountKey,
+                testPreferenceKey,
                 storedCount + 1
             )
         }.returns(Unit)
 
-        every { dataStore.getPreference(SavedQuizzesRepositoryImpl.storedCountKey, 0) }
+        every { dataStore.getPreference(testPreferenceKey, 0) }
             .returns(flowOf(storedCount))
 
         // When
@@ -72,10 +72,7 @@ internal class SavedQuizzesRepositoryTests : BaseTest<SavedQuizzesRepository>() 
         // Then
         // dataStore.write is called with the incremented value
         coVerify {
-            dataStore.write(
-                SavedQuizzesRepositoryImpl.storedCountKey,
-                storedCount + 1
-            )
+            dataStore.write(testPreferenceKey, storedCount + 1)
         }.wasInvoked(exactly = 1)
     }
 }
