@@ -13,7 +13,6 @@ internal interface SavedQuizzesRepository {
 
 internal class SavedQuizzesRepositoryImpl(
     private val dataStore: PreferencesDataStore,
-    private val storedCountKey: Preferences.Key<Int> = intPreferencesKey("stored_count")
 ) : SavedQuizzesRepository {
     override suspend fun getStoredCountFlow(): Flow<Int> =
         dataStore.getPreference(storedCountKey, 0)
@@ -21,5 +20,9 @@ internal class SavedQuizzesRepositoryImpl(
     override suspend fun incrementStoredCount() {
         val currentCount = getStoredCountFlow().first()
         dataStore.write(storedCountKey, currentCount + 1)
+    }
+
+    private companion object {
+        val storedCountKey: Preferences.Key<Int> = intPreferencesKey("stored_count")
     }
 }

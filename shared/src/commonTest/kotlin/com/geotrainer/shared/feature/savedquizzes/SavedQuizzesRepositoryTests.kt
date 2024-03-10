@@ -21,11 +21,10 @@ import kotlinx.coroutines.flow.flowOf
 internal class SavedQuizzesRepositoryTests : BaseTest<SavedQuizzesRepository>() {
     @Mock
     private val dataStore = mock(classOf<PreferencesDataStore>())
-    private val testPreferenceKey = intPreferencesKey("test_key")
+    private val testPreferenceKey = intPreferencesKey("stored_count")
 
     override fun createSut(testScope: CoroutineScope) = SavedQuizzesRepositoryImpl(
         dataStore = dataStore,
-        storedCountKey = testPreferenceKey
     )
 
     @Test
