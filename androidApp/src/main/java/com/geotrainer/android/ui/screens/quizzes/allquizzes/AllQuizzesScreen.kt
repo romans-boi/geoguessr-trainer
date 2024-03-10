@@ -89,7 +89,7 @@ fun AllQuizzesScreen(
     // Keep track of open tab
     val tabs = (state as? AllQuizzesViewModel.State.Data)?.tabs
     val pagerState = rememberPagerState(pageCount = { tabs?.size ?: 0 })
-    val pagerScope = rememberCoroutineScope()  // Needed for programmatic page changes
+    val coroutineScope = rememberCoroutineScope()
 
     Screen(
         onScreenView = viewModel::getAllQuizTabs,
@@ -102,7 +102,7 @@ fun AllQuizzesScreen(
             state = state,
             pagerState = pagerState,
             onSelectTab = { tabIndex ->
-                pagerScope.launch {
+                coroutineScope.launch {
                     pagerState.animateScrollToPage(tabIndex)
                 }
             },

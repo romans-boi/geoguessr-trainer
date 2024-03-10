@@ -34,7 +34,7 @@ kotlin {
     }
 
     jvmToolchain(ProjectJavaVersion.integer)
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -61,6 +61,10 @@ kotlin {
             implementation(libs.ktor.serialization.kotlixjson)
             implementation(libs.ktor.logging)
             implementation(libs.ktor.auth)
+
+            /* DataStore */
+            api(libs.androidx.datastore.preferences.core)
+            api(libs.androidx.datastore.core.okio)
 
             /* Coroutines */
             implementation(libs.kotlinx.coroutines.core)
@@ -121,6 +125,18 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(ProjectJavaVersion.integer))
     }
+}
+
+ksp {
+    arg("mockative.stubsUnitByDefault", "true")
+}
+
+dependencies {
+    configurations
+        .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
+        .forEach {
+            add(it.name, libs.test.mockative.processor)
+        }
 }
 
 buildkonfig {

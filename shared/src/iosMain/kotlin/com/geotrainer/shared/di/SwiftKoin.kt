@@ -2,6 +2,8 @@ package com.geotrainer.shared.di
 
 import com.geotrainer.shared.utils.LocalizableStringsAccessor
 import com.geotrainer.shared.utils.LocalizableStringsAccessorImpl
+import com.geotrainer.shared.utils.PreferencesDataStore
+import com.geotrainer.shared.utils.getDataStore
 import org.koin.core.Koin
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
@@ -13,6 +15,8 @@ class SwiftKoin internal constructor(koin: Koin) {
 }
 
 internal actual fun Scope.localizableStringsAccessor(): LocalizableStringsAccessor = LocalizableStringsAccessorImpl
+
+internal actual fun Scope.dataStore(): PreferencesDataStore = getDataStore()
 
 fun startOrRetrieveKoin(): SwiftKoin = (KoinPlatformTools.defaultContext().getOrNull() ?: startKoin(listOf(module {
     factory<LocalizableStringsAccessor> { LocalizableStringsAccessorImpl }
