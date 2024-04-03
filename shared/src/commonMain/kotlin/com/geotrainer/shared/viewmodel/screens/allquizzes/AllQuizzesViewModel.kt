@@ -54,7 +54,7 @@ open class AllQuizzesViewModel internal constructor(
                 }
 
                 state.update {
-                    State.Data(tabs = allTab + continentTabs)
+                    State.Data(tabs = allTab + continentTabs, savedQuizIds = emptyList())
                 }
             }
         )
@@ -63,6 +63,6 @@ open class AllQuizzesViewModel internal constructor(
     sealed class State {
         data object Loading : State()
         data object Error : State()
-        data class Data(val tabs: List<ContinentTab>) : State()
+        data class Data(val tabs: List<ContinentTab>, val savedQuizIds: List<String>) : State()
     }
 }
