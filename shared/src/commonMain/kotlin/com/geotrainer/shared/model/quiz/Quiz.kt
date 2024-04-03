@@ -10,7 +10,7 @@ typealias QuizId = String
 @Serializable
 @CommonParcelize
 data class Quiz(
-    val id: QuizId = "1",
+    val id: QuizId,
     val quizType: QuizType,
     val title: String,
     val description: String,

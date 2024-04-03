@@ -65,6 +65,7 @@ fun QuizDetailsScreen(
 fun QuizDetailsScreenContentPreview() = PreviewSurface {
     QuizDetailsContent(
         quiz = Quiz(
+            id = "",
             quizType = QuizType.CapitalCities,
             title = "Capital Cities",
             description = "Some semi long description with a few words and so. ".repeat(n = 15),

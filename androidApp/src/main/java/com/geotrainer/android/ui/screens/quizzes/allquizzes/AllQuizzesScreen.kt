@@ -115,18 +115,21 @@ fun AllQuizzesScreenPreview() = PreviewSurface {
         ContinentTab(
             tabType = ContinentTabType.All, items = listOf(
                 Quiz(
+                    id = "",
                     quizType = QuizType.CapitalCities,
                     title = "First Quiz",
                     description = "",
                     continent = null
                 ),
                 Quiz(
+                    id = "",
                     quizType = QuizType.EuropeanUnionCountries,
                     title = "Quiz 2",
                     description = "",
                     continent = Continent.Africa
                 ),
                 Quiz(
+                    id = "",
                     quizType = QuizType.DrivingSide,
                     title = "3rd quiz with quite a long name if you ask me",
                     description = "",
@@ -155,10 +158,11 @@ fun QuizCardPreview() = PreviewSurface {
         (listOf(null) + Continent.entries).map { continent ->
             QuizCard(
                 quiz = Quiz(
+                    id = "",
                     quizType = QuizType.DomainNames,
                     title = "Domain names",
                     description = "XXX",
-                    continent = continent
+                    continent = continent,
                 ),
                 onAccessQuiz = {},
                 isSaved = false,

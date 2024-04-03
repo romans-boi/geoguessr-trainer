@@ -136,18 +136,21 @@ fun QuizCardPreview() = PreviewSurface {
     ) {
         listOf(
             Quiz(
+                id = "",
                 quizType = QuizType.CapitalCities,
                 title = "First Quiz",
                 description = "",
                 continent = null
             ),
             Quiz(
+                id = "",
                 quizType = QuizType.EuropeanUnionCountries,
                 title = "Quiz 2",
                 description = "",
                 continent = Continent.Africa
             ),
             Quiz(
+                id = "",
                 quizType = QuizType.DrivingSide,
                 title = "3rd quiz with quite a long name if you ask me",
                 description = "",
