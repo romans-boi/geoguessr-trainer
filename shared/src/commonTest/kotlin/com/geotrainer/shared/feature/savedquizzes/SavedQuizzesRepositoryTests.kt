@@ -38,7 +38,7 @@ internal class SavedQuizzesRepositoryTests : BaseTest<SavedQuizzesRepository>() 
 
         // When
         // Get stored count flow
-        val actualFlow = sut.getStoredCountFlow()
+        val actualFlow = sut.getSavedQuizIds()
 
         // Then
         // The flow is the expected flow
@@ -66,7 +66,7 @@ internal class SavedQuizzesRepositoryTests : BaseTest<SavedQuizzesRepository>() 
 
         // When
         // Increment stored count
-        sut.incrementStoredCount()
+        sut.toggleQuizSaved()
 
         // Then
         // dataStore.write is called with the incremented value

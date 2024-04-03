@@ -31,6 +31,7 @@ import com.geotrainer.android.utils.localizedString
 import com.geotrainer.android.utils.resource
 import com.geotrainer.shared.model.Continent
 import com.geotrainer.shared.model.quiz.Quiz
+import com.geotrainer.shared.model.quiz.QuizType
 
 import GeoTrainer.shared.MR
 import com.ramcosta.composedestinations.annotation.Destination
@@ -64,7 +65,7 @@ fun QuizDetailsScreen(
 fun QuizDetailsScreenContentPreview() = PreviewSurface {
     QuizDetailsContent(
         quiz = Quiz(
-            quizId = "id",
+            quizType = QuizType.CapitalCities,
             title = "Capital Cities",
             description = "Some semi long description with a few words and so. ".repeat(n = 15),
             continent = Continent.NorthAmerica

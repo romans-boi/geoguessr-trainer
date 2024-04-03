@@ -53,6 +53,8 @@ import com.geotrainer.android.utils.resource
 import com.geotrainer.android.utils.withValues
 import com.geotrainer.shared.model.Continent
 import com.geotrainer.shared.model.quiz.Quiz
+import com.geotrainer.shared.model.quiz.QuizId
+import com.geotrainer.shared.model.quiz.QuizType
 import com.geotrainer.shared.viewmodel.screens.allquizzes.AllQuizzesViewModel
 import com.geotrainer.shared.viewmodel.screens.allquizzes.ContinentTab
 import com.geotrainer.shared.viewmodel.screens.allquizzes.ContinentTabType
@@ -82,7 +84,10 @@ fun AllQuizzesScreen(
     val coroutineScope = rememberCoroutineScope()
 
     Screen(
-        onScreenView = viewModel::getAllQuizTabs,
+        onScreenView = {
+            viewModel.getAllQuizTabs()
+            viewModel.collectSavedQuizIds()
+        },
         systemBarIconsColor = SystemBarIconsColor(
             StatusBarIconsColor.Light,
             NavigationBarIconsColor.Light
@@ -97,7 +102,7 @@ fun AllQuizzesScreen(
                 }
             },
             onOpenQuiz = { navigator.navigate(QuizDetailsScreenDestination(it)) },
-            onSaveQuizToggled = { /* TODO */ }
+            onSaveQuizToggled = viewModel::onSaveQuizToggled
         )
     }
 }
@@ -110,19 +115,19 @@ fun AllQuizzesScreenPreview() = PreviewSurface {
         ContinentTab(
             tabType = ContinentTabType.All, items = listOf(
                 Quiz(
-                    quizId = "1",
+                    quizType = QuizType.CapitalCities,
                     title = "First Quiz",
                     description = "",
                     continent = null
                 ),
                 Quiz(
-                    quizId = "2",
+                    quizType = QuizType.EuropeanUnionCountries,
                     title = "Quiz 2",
                     description = "",
                     continent = Continent.Africa
                 ),
                 Quiz(
-                    quizId = "3",
+                    quizType = QuizType.DrivingSide,
                     title = "3rd quiz with quite a long name if you ask me",
                     description = "",
                     continent = Continent.Asia
@@ -133,7 +138,7 @@ fun AllQuizzesScreenPreview() = PreviewSurface {
         ContinentTab(ContinentTabType.Continental(continent = Continent.Asia), listOf())
     )
     AllQuizzesScreenSurface(
-        state = AllQuizzesViewModel.State.Data(tabs = tabs, savedQuizIds = listOf("2")),
+        state = AllQuizzesViewModel.State.Data(tabs = tabs, savedQuizIds = setOf("2")),
         pagerState = rememberPagerState(pageCount = { tabs.size }),
         onSelectTab = {},
         onOpenQuiz = {},
@@ -150,7 +155,7 @@ fun QuizCardPreview() = PreviewSurface {
         (listOf(null) + Continent.entries).map { continent ->
             QuizCard(
                 quiz = Quiz(
-                    quizId = "id",
+                    quizType = QuizType.DomainNames,
                     title = "Domain names",
                     description = "XXX",
                     continent = continent
@@ -170,9 +175,9 @@ fun QuizCardPreview() = PreviewSurface {
 private fun AllQuizzesDataContent(
     pagerState: PagerState,
     tabs: List<ContinentTab>,
-    savedQuizIds: List<String>,
+    savedQuizIds: Set<QuizId>,
     onOpenQuiz: (quiz: Quiz) -> Unit,
-    onSaveQuizToggled: (quiz: Quiz) -> Unit,
+    onSaveQuizToggled: (quizId: QuizId) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
     HorizontalPager(state = pagerState) { page ->
@@ -189,8 +194,8 @@ private fun AllQuizzesDataContent(
                 QuizCard(
                     quiz = quiz,
                     onAccessQuiz = { onOpenQuiz(quiz) },
-                    isSaved = quiz.quizId in savedQuizIds,
-                    onSaveToggled = { onSaveQuizToggled(quiz) }
+                    isSaved = quiz.id in savedQuizIds,
+                    onSaveToggled = { onSaveQuizToggled(quiz.id) }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -208,7 +213,7 @@ private fun AllQuizzesScreenSurface(
     pagerState: PagerState,
     onSelectTab: (Int) -> Unit,
     onOpenQuiz: (quiz: Quiz) -> Unit,
-    onSaveQuizToggled: (quiz: Quiz) -> Unit
+    onSaveQuizToggled: (quizId: QuizId) -> Unit
 ) {
     // For this screen specifically, we need the status bar to be there at all times so the sticky
     // tab row doesn't go behind the status bar
@@ -277,7 +282,7 @@ private fun AllQuizzesScreenContent(
     pagerState: PagerState,
     onSelectTab: (Int) -> Unit,
     onOpenQuiz: (quiz: Quiz) -> Unit,
-    onSaveQuizToggled: (quiz: Quiz) -> Unit
+    onSaveQuizToggled: (quizId: QuizId) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
         rememberTopAppBarState()

@@ -43,14 +43,14 @@ fun SavedScreenScaffold(
     verticalArrangement = Arrangement.SpaceEvenly,
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
-    Text("Saved count: ${state.count}")
+    Text("Saved IDs: ${state.savedQuizIds.joinToString()}")
     PrimaryButton(text = "Increment", onClick = onIncrementCount)
 }
 
 @Preview(name = "Main Content", group = previewGroup)
 @Composable
 fun SavedScreenPreview() = PreviewSurface {
-    val state = SavedQuizzesViewModel.State.Data(0)
+    val state = SavedQuizzesViewModel.State.Data(setOf("1", "2", "3"))
     SavedScreenContent(state = state, onIncrementCount = {})
 }
 

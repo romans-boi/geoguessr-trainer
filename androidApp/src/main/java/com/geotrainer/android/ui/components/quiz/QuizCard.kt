@@ -33,6 +33,7 @@ import com.geotrainer.android.utils.colorIndicator
 import com.geotrainer.android.utils.localizedString
 import com.geotrainer.shared.model.Continent
 import com.geotrainer.shared.model.quiz.Quiz
+import com.geotrainer.shared.model.quiz.QuizType
 
 private const val previewGroup = "Quiz card"
 
@@ -135,19 +136,19 @@ fun QuizCardPreview() = PreviewSurface {
     ) {
         listOf(
             Quiz(
-                quizId = "1",
+                quizType = QuizType.CapitalCities,
                 title = "First Quiz",
                 description = "",
                 continent = null
             ),
             Quiz(
-                quizId = "2",
+                quizType = QuizType.EuropeanUnionCountries,
                 title = "Quiz 2",
                 description = "",
                 continent = Continent.Africa
             ),
             Quiz(
-                quizId = "3",
+                quizType = QuizType.DrivingSide,
                 title = "3rd quiz with quite a long name if you ask me",
                 description = "",
                 continent = Continent.Asia
@@ -156,7 +157,7 @@ fun QuizCardPreview() = PreviewSurface {
             QuizCard(
                 quiz = quiz,
                 onAccessQuiz = {},
-                isSaved = quiz.quizId in savedQuizIds,
+                isSaved = quiz.id in savedQuizIds,
                 onSaveToggled = {}
             )
         }
