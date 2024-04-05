@@ -84,10 +84,7 @@ fun AllQuizzesScreen(
     val coroutineScope = rememberCoroutineScope()
 
     Screen(
-        onScreenView = {
-            viewModel.getAllQuizTabs()
-            viewModel.collectSavedQuizIds()
-        },
+        onScreenView = viewModel::getAllQuizTabs,
         systemBarIconsColor = SystemBarIconsColor(
             StatusBarIconsColor.Light,
             NavigationBarIconsColor.Light

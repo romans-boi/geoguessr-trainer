@@ -12,6 +12,7 @@ import com.geotrainer.shared.viewmodel.BaseViewModel
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 
 sealed class ContinentTabType {
@@ -40,6 +41,8 @@ open class AllQuizzesViewModel internal constructor(
     fun getAllQuizTabs() = scope.launchUnit {
         state.update { State.Loading }
 
+        val savedQuizIds = savedQuizzesUseCase.getSavedQuizIds().first()
+
         allQuizzesUseCase.getAllQuizzes().fold(
             fe = {
                 state.update { State.Error }
@@ -60,26 +63,21 @@ open class AllQuizzesViewModel internal constructor(
                 }
 
                 state.update {
-                    State.Data(tabs = allTab + continentTabs, savedQuizIds = emptySet())
+                    State.Data(tabs = allTab + continentTabs, savedQuizIds = savedQuizIds)
                 }
             }
         )
     }
 
-    fun collectSavedQuizIds() = scope.launchUnit {
-        savedQuizzesUseCase.getSavedQuizIds().collect { savedQuizIds ->
-            val currentState = state.value
-            if (currentState !is State.Data) {
-                return@collect
-            }
-            state.update {
-                currentState.copy(savedQuizIds = savedQuizIds)
-            }
-        }
-    }
-
     fun onSaveQuizToggled(quizId: QuizId) = scope.launchUnit {
         savedQuizzesUseCase.toggleQuizSaved(quizId)
+        val savedQuizIds = savedQuizzesUseCase.getSavedQuizIds().first()
+        state.update {
+            when (val currentState = state.value) {
+                is State.Data -> currentState.copy(savedQuizIds = savedQuizIds)
+                else -> currentState
+            }
+        }
     }
 
     sealed class State {
