@@ -1,5 +1,4 @@
 import com.project.starter.easylauncher.filter.ChromeLikeFilter
-import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
 plugins {
@@ -10,6 +9,7 @@ plugins {
     alias(libs.plugins.easyLauncher)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.kotlinx.parcelize)
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -167,6 +167,11 @@ dependencies {
     /* Compose Destinations */
     implementation(libs.composeDestinations.core)
     ksp(libs.composeDestinations.ksp)
+
+    /* Screenshot Testing */
+    debugImplementation(libs.showkase)
+    implementation(libs.showkase.annotation)
+    kspDebug(libs.showkase.processor)
 
     /* Testing */
     testImplementation(kotlin("test"))
