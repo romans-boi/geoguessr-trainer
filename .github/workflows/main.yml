@@ -37,7 +37,7 @@ jobs:
           gradle-version: '8.2.1'
 
       - name: Run recordPaparazziDevDebug task
-        run: ./gradlew recordPaparazziDevDebug
+        run: ./gradlew androidApp:recordPaparazziDevDebug
 
       - name: Upload to screenshotbot.io
         run: |
