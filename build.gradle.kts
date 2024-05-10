@@ -23,6 +23,8 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     }
 }
 
+//TODO env properties commented out due to issues calling Paparazzi tasks.
+// Should probs be introduced :/ Especially if we encounter buildKonfig issues.
 //setupEnvironmentProperties()
 
 fun setupEnvironmentProperties() {
