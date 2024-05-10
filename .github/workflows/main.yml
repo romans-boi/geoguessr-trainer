@@ -1,0 +1,54 @@
+name: Upload Screenshots to screenshotbot.io
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache recorder script
+        id: cache-recorder-script
+        uses: actions/cache@v2
+        with:
+          path: recorder.sh
+          key: recorder-script-${{ runner.os }}
+
+      - name: Download recorder script
+        if: steps.cache-recorder-script.outputs.cache-hit != 'true'
+        run: curl https://cdn.screenshotbot.io/recorder.sh --output recorder.sh
+
+      - name: Make recorder script executable
+        run: chmod +x recorder.sh
+
+      - name: Set up JDK 11 for x64
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          architecture: x64
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: '8.2.1'
+
+      - name: Run recordPaparazziDevDebug task
+        run: ./gradlew androidApp:recordPaparazziDevDebug
+
+      - name: Upload to screenshotbot.io
+        run: |
+          ./recorder.sh --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
+        env:
+          SCREENSHOTBOT_API_KEY: ${{ secrets.SCREENSHOTBOT_API_KEY }}
+          SCREENSHOTBOT_API_SECRET: ${{ secrets.SCREENSHOTBOT_API_SECRET }}
