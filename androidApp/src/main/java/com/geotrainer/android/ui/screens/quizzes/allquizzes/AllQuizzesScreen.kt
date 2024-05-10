@@ -132,7 +132,7 @@ fun AllQuizzesScreenPreview() = PreviewSurface {
                 ),
                 Quiz(
                     quizId = "3",
-                    title = "3rd quiz with quite a long name if you ask me",
+                    title = "3rd quiz with quite a really long name if you ask me",
                     description = "",
                     continent = Continent.Asia
                 )
