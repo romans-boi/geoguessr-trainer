@@ -46,9 +46,17 @@ jobs:
       - name: Run recordPaparazziDevDebug task
         run: ./gradlew androidApp:recordPaparazziDevDebug
 
-      - name: Upload to screenshotbot.io
+      - name: Setup screenshotbot.io script
         run: |
           ./recorder.sh --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
+
+      - name: Make recorder script executable
+        run: chmod +x ~/screenshotbot/recorder
+
+      - name: Upload screenshots
+        run: ~/screenshotbot/recorder --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
+
+        
         env:
           SCREENSHOTBOT_API_KEY: ${{ secrets.SCREENSHOTBOT_API_KEY }}
           SCREENSHOTBOT_API_SECRET: ${{ secrets.SCREENSHOTBOT_API_SECRET }}
