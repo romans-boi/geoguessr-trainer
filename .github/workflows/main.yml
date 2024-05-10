@@ -17,9 +17,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Cache recorder script
+        uses: actions/cache@v2
+        with:
+          path: ~/screenshotbot
+          key: recorder-${{ runner.os }}
+
+      - name: Download recorder script
+        run: curl https://cdn.screenshotbot.io/recorder.sh --output ~/screenshotbot/recorder.sh
+
+      - name: Make recorder script executable
+        run: chmod +x ~/screenshotbot/recorder.sh
+
       - name: Upload
         run: |
-          ~/screenshotbot/recorder --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
+          ~/screenshotbot/recorder.sh --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
         env:
           SCREENSHOTBOT_API_KEY: ${{ secrets.SCREENSHOTBOT_API_KEY }}
           SCREENSHOTBOT_API_SECRET: ${{ secrets.SCREENSHOTBOT_API_SECRET }}
