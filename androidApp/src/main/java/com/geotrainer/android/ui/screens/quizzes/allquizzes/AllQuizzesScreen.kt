@@ -126,7 +126,7 @@ fun AllQuizzesScreenPreview() = PreviewSurface {
                 ),
                 Quiz(
                     quizId = "2",
-                    title = "Quiz 2",
+                    title = "Second Quiz",
                     description = "",
                     continent = Continent.Africa
                 ),
