@@ -31,6 +31,14 @@ jobs:
       - name: Make recorder script executable
         run: chmod +x recorder.sh
 
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: '8.2.1'
+
+      - name: Run recordPaparazziDevDebug task
+        run: ./gradlew recordPaparazziDevDebug
+
       - name: Upload to screenshotbot.io
         run: |
           ./recorder.sh --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
