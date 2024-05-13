@@ -185,7 +185,7 @@ private fun PrimaryButtonImpl(
         onClick = {
             multipleEventsCutter.processEvent(onClick)
         },
-        modifier = modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp),
+        modifier = modifier.sizeIn(minWidth = 48.dp, minHeight = 60.dp),
         enabled = enabled,
         elevation = elevation,
         shape = shape,
