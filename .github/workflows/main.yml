@@ -17,21 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache recorder script
-        id: cache-recorder-script
-        uses: actions/cache@v2
-        with:
-          path: recorder.sh
-          key: recorder-script-${{ runner.os }}
-
-      - name: Download recorder script
-        if: steps.cache-recorder-script.outputs.cache-hit != 'true'
-        run: curl https://cdn.screenshotbot.io/recorder.sh --output recorder.sh
-
-      - name: Make recorder script executable
-        run: chmod +x recorder.sh
-
-      - name: Set up JDK 11 for x64
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '17'
@@ -48,14 +34,13 @@ jobs:
 
       - name: Setup screenshotbot.io script
         run: |
-          ./recorder.sh --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
-
-      - name: Make recorder script executable
-        run: chmod +x ~/screenshotbot/recorder
+          curl https://cdn.screenshotbot.io/recorder.sh --output ~/screenshotbot/recorder
+          chmod +x ~/screenshotbot/recorder
 
       - name: Upload screenshots
-        run: ~/screenshotbot/recorder --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
-
+        run: |
+          git fetch origin develop
+          ~/screenshotbot/recorder --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
         
         env:
           SCREENSHOTBOT_API_KEY: ${{ secrets.SCREENSHOTBOT_API_KEY }}
