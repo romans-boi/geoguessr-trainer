@@ -34,8 +34,7 @@ jobs:
 
       - name: Setup screenshotbot.io script
         run: |
-          curl https://cdn.screenshotbot.io/recorder.sh --output ~/screenshotbot/recorder
-          chmod +x ~/screenshotbot/recorder
+          curl https://cdn.screenshotbot.io/recorder.sh | sh
 
       - name: Upload screenshots
         run: |
