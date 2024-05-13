@@ -39,8 +39,12 @@ jobs:
       - name: Upload screenshots
         run: |
           git fetch origin develop
-          ~/screenshotbot/recorder --directory androidApp/src/test/snapshots/images/ --channel geotrainer --main-branch develop
-        
+          ~/screenshotbot/recorder \
+            --directory androidApp/src/test/snapshots/images/ \
+            --channel geotrainer \
+            --main-branch develop \
+            --repo-url https://github.com/romans-boi/geoguessr-trainer.git
+      
         env:
           SCREENSHOTBOT_API_KEY: ${{ secrets.SCREENSHOTBOT_API_KEY }}
           SCREENSHOTBOT_API_SECRET: ${{ secrets.SCREENSHOTBOT_API_SECRET }}
