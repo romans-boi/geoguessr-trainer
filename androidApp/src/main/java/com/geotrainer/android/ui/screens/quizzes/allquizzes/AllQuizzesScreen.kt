@@ -134,7 +134,7 @@ fun AllQuizzesScreenPreview() = PreviewSurface {
                     quizId = "3",
                     title = "3rd quiz with quite a long name if you ask me",
                     description = "",
-                    continent = Continent.Asia
+                    continent = Continent.Oceania
                 )
             )
         ),
